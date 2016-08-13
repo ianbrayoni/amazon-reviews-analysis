@@ -12,9 +12,6 @@ import scrapy
 
 class AmazonCrawlerItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    reviewer = scrapy.Field()
-    review_date = scrapy.Field()
-    review_title = scrapy.Field()
+    # name = scrapy.Field()    
     review_text = scrapy.Field()
     

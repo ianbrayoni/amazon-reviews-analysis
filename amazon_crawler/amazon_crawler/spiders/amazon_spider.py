@@ -7,29 +7,28 @@
 """
 
 import scrapy
+from amazon_crawler.items import AmazonCrawlerItem
 
 
 class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
     allowed_domains = ["amazon.com"]
     start_urls = (
-        'http://www.amazon.com/',
+        'https://www.amazon.com/',
+        'https://www.amazon.com/Sony-KDL40R510C-40-Inch-1080p-Smart/product-reviews/B00V0K0Y00'
     )
 
     def parse(self, response):
         # get the last page number on the page
-        last_page_num = self.last_page_numerical(response)
+        page_num = self.last_page_numerical(response)
 
-        if last_page_num < 1:
+        if page_num < 1:
             # abort the search if there are no results
             return
         else:
-            # otherwise loop over all pages and scrape
-            page_urls = [response.url + "pageNumber=" + str(pageNumber)
-            for pageNumber in xrange(1,last_page_num + 1)]
-
-            for page_url in page_urls:
-                yield scrapy.Request(page_url, callback=self.parse_reviews)
+            url = 'https://www.amazon.com/Sony-KDL40R510C-40-Inch-1080p-Smart/product-reviews/B00V0K0Y00'
+            yield scrapy.Request(url, callback=self.parse_reviews)
+           
 
     def last_page_numerical(self, response):
     	# retrieve last page number from the pagination
@@ -39,8 +38,25 @@ class AmazonSpiderSpider(scrapy.Spider):
     	 		.extract()[0]
     	 		.split('pageNumber=')[1])
     	 	return last_page_num
-    	 except Exception, e:
+    	except Exception, e:
     	 	raise e 
 
     def parse_reviews(self, response):
-        pass
+        # retrieve reviews
+        try:
+            item = AmazonCrawlerItem()
+            reviews = response.xpath('//*[contains(concat( " ", @class, " " ), concat( " ", "review-text", " " ))]/text()').extract()
+            
+            for review in reviews:
+                item['review_text'] = review
+                yield item
+
+            nextPage = response.css("ul.a-pagination >li.a-last > a::attr('href')")
+
+            if nextPage:
+                url = response.urljoin(nextPage[0].extract())
+                yield scrapy.Request(url, self.parse_reviews)
+
+        except Exception, e:
+            raise e
+        
