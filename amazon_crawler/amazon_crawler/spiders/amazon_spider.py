@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
 
-"""
- https://www.amazon.com/Samsung-UN40H5003-40-Inch-Measured-Diagonally/
- product-reviews/B00MYBR75O/pageNumber=2
-
-"""
-
 import scrapy
+import re
 from amazon_crawler.items import AmazonCrawlerItem
 
 
@@ -45,9 +40,11 @@ class AmazonSpiderSpider(scrapy.Spider):
         # retrieve reviews
         try:
             item = AmazonCrawlerItem()
-            reviews = response.xpath('//*[contains(concat( " ", @class, " " ), concat( " ", "review-text", " " ))]/text()').extract()
+            reviews = response.css('.review-text').extract()
             
             for review in reviews:
+                # remove html tags 
+                review = re.sub( r'<span class="a-size-base review-text">|<br>|</span>', "", review)
                 item['review_text'] = review
                 yield item
 
