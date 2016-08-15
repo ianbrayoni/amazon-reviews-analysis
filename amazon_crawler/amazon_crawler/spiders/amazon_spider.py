@@ -38,15 +38,15 @@ class AmazonSpiderSpider(scrapy.Spider):
 
     def parse_reviews(self, response):
         # retrieve reviews
-        try:
-            item = AmazonCrawlerItem()
+        try:            
             reviews = response.css('.review-text').extract()
             
             for review in reviews:
+                item = AmazonCrawlerItem()
                 # remove html tags 
                 review = re.sub( r'<span class="a-size-base review-text">|<br>|</span>', "", review)
-                item['review_text'] = review
-                yield item
+                item['review_text'] = review 
+                yield item            
 
             nextPage = response.css("ul.a-pagination >li.a-last > a::attr('href')")
 

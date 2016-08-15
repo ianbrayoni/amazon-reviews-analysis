@@ -9,9 +9,12 @@
 
 import scrapy
 
+from scrapy_djangoitem import DjangoItem
+from crawler.models import Reviews
 
-class AmazonCrawlerItem(scrapy.Item):
+class AmazonCrawlerItem(DjangoItem):
     # define the fields for your item here like:
-    # name = scrapy.Field()    
-    review_text = scrapy.Field()
+    # name = scrapy.Field() 
+ 	# review_text = scrapy.Field()
+    django_model = Reviews   
     
