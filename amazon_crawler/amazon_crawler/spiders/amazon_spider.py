@@ -39,12 +39,13 @@ class AmazonSpiderSpider(scrapy.Spider):
     def parse_reviews(self, response):
         # retrieve reviews
         try:            
-            reviews = response.css('.review-text').extract()
+            # reviews = response.css('.review-text').extract()
+            reviews = response.css('.review-text').xpath('string()').extract()
             
             for review in reviews:
                 item = AmazonCrawlerItem()
                 # remove html tags 
-                review = re.sub( r'<span class="a-size-base review-text">|<br>|</span>', "", review)
+                # review = re.sub( r'<span class="a-size-base review-text">|<br>|</span>', "", review)
                 item['review_text'] = review 
                 yield item            
 
