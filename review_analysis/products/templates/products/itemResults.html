@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Product Titles and ASINs</h1>
+<ul>
+	{% for item in items %}
+	<li>
+		{{item.ItemAttributes.Title}} <b>{{item.ASIN}}</b> 
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}
+
