@@ -59,7 +59,7 @@ def itemLookUp(request):
 			cmd = 'scrapy crawl amazon_spider -a start_url="%s"' % url
 			subprocess.call(cmd, shell=True)
 			
-		return HttpResponse("Finished processing: " url)
+		return HttpResponse("Finished processing: " + url)
 
 	else:
 		form = ItemLookUpForm()
