@@ -6,6 +6,7 @@ from amazon_crawler.items import AmazonCrawlerItem
 
 
 class AmazonSpiderSpider(scrapy.Spider):
+    """ spider to crawl product reviews from amazon.com"""
     name = "amazon_spider"
     
     def __init__(self, *args, **kwargs): 

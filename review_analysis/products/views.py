@@ -50,16 +50,25 @@ def itemLookUp(request):
 		form = ItemLookUpForm(request.POST)		
 
 		if form.is_valid():
-			asin = form.cleaned_data['asin']
-			form.cleaned_data['reviews_url'] = makeUrl(asin)
-			url = form.cleaned_data['reviews_url'] 
+			post = form.save(commit=False)
+			post.asin = form.cleaned_data['asin']
+			post.reviews_url = makeUrl(post.asin)
+
+			# get product title
+			itemLookup = api.item_lookup(post.asin)
+			for item in itemLookup.Items.Item:
+				post.product_title = item.ItemAttributes.Title
+
+			# save item 
+			post.save()
+
 			# find crawler cfg
 			os.chdir("/home/brayoni/CodeHub/Reviews/amazon_crawler")
 			# scrapy crawl amazon_spider -a start_url="https://www.amazon.com/product-reviews/B01FFQEMVQ/"
-			cmd = 'scrapy crawl amazon_spider -a start_url="%s"' % url
+			cmd = 'scrapy crawl amazon_spider -a start_url="%s"' % post.reviews_url
 			subprocess.call(cmd, shell=True)
 			
-		return HttpResponse("Finished processing: " + url)
+		return HttpResponse("Finished processing: " + post.reviews_url)
 
 	else:
 		form = ItemLookUpForm()
