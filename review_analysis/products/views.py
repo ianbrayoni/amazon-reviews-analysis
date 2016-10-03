@@ -57,16 +57,16 @@ def itemLookUp(request):
 			# get product title
 			itemLookup = api.item_lookup(post.asin)
 			for item in itemLookup.Items.Item:
-				post.product_title = item.ItemAttributes.Title
-
-			# save item 
-			post.save()
+				post.product_title = item.ItemAttributes.Title			
 
 			# find crawler cfg
 			os.chdir("/home/brayoni/CodeHub/Reviews/amazon_crawler")
 			# scrapy crawl amazon_spider -a start_url="https://www.amazon.com/product-reviews/B01FFQEMVQ/"
 			cmd = 'scrapy crawl amazon_spider -a start_url="%s"' % post.reviews_url
 			subprocess.call(cmd, shell=True)
+			
+			# save item 
+			post.save()
 			
 		return HttpResponse("Finished processing: " + post.reviews_url)
 
