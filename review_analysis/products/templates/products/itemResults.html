@@ -2,10 +2,12 @@
 
 {% block content %}
 <h1>Product Titles and ASINs</h1>
+<!-- {{inventory}} -->
 <ul>
-	{% for item in items %}
+	{% for i in inventory %}
 	<li>
-		{{item.ItemAttributes.Title}} <b>{{item.ASIN}}</b> 
+		<!-- {{item.ItemAttributes.Title }} <b>{{item.ASIN}}</b>  -->
+		{{i}}
 	</li>
 	{% endfor %}
 </ul>

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """review_analysis URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
