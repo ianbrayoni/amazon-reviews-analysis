@@ -40,7 +40,8 @@ ehthumbs.db
 Thumbs.db
 
 # dirs #
-########
-doc/* 
+######## 
 migrations/*
 .idea/*
+train_data/*
+
