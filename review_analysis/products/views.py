@@ -34,16 +34,13 @@ def itemSearch(request):
 			# Search Amazon Product API
 			items = api.item_search(productGroup,Manufacturer=manufacturer,Keywords=keywords,Condition=condition)
 
-
+			# to_unicode takes care of non-ascii characters
 			inventory=[]
 			for item in items:
-				# title = unicode(item.ItemAttributes.Title)
 				title = to_unicode(item.ItemAttributes.Title)
 				item_id = to_unicode(item.ASIN)
 				item_tuple = (title,item_id)
 				inventory.append(item_tuple)
-
-			# print inventory
 
 			return render(request, 'products/itemResults.html',{'inventory': inventory})
 
@@ -78,7 +75,7 @@ def itemLookUp(request):
 			cmd = 'scrapy crawl amazon_spider -a start_url="%s"' % post.reviews_url
 			subprocess.call(cmd, shell=True)
 			
-			# save item 
+			# save item ; B01H7XOSGO - what if they have no reviews?
 			post.save()
 			
 		return HttpResponse("Finished processing: " + post.reviews_url)
@@ -97,3 +94,4 @@ def to_unicode(obj, encoding='utf-8'):
 		if not isinstance(obj,unicode):
 			obj = unicode(obj,encoding)
 	return obj
+
