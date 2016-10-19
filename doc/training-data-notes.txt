@@ -1,0 +1,99 @@
+scrapy crawl amazon_spider -a start_url="https://www.amazon.com/product-reviews/B00IYEUNMY/" -o train_data/Sony-Phone-B00IYEUNMY.csv -t csv
+
+Samsung TV 
+Samsung UN40J5200 40-Inch 1080p Smart LED TV (2015 Model) B00WR292JE	
+Samsung UN40K5100 40-Inch 1080p LED TV (2016 Model) B01FFQEMVQ
+Samsung UN32J5003 32-Inch 1080p LED TV (2015 Model) B00V0923TG
+Samsung UN65KU6500 Curved 65-Inch 4K Ultra HD Smart LED TV (2016 Model) B01E6BL5SO
+Samsung UN55KS8000 55-Inch 4K Ultra HD Smart LED TV (2016 Model) B01C5TFLSE
+Samsung UN60KS8000 60-Inch 4K Ultra HD Smart LED TV (2016 Model) B01DRPWTLC
+amsung UN60JS7000 60-Inch 4K Ultra HD Smart LED TV (2015 Model) B00ZIGRVNA
+Samsung UN60JU6500 60-Inch 4K Ultra HD Smart LED TV (2015 Model) B00TWFHU7U
+Samsung UN55JU7100 55-Inch 4K Ultra HD 3D Smart LED TV B00T48CVVK
+Samsung UN49K6250 Curved 49-Inch TV with HW-J6500R Curved Soundbar B01F51FF80
+
+
+Samsung Phone
+**** 'ascii' codec can't encode character u'\xa0' in position 28: ordinal not in range(128)
+
+<class 'amazonproduct.processors._lxml.SearchPaginator'>
+
+('Samsung Galaxy J5 SM-J500H/DS GSM Factory Unlocked Smartphone, International Version (Gold)', 'B014GCG150')
+('Samsung Galaxy Grand Prime DUOS G531H/DS - Gold (International Version)', 'B014LA1M6K')
+('Samsung Galaxy S5 G900V 16GB Verizon / GSM Smartphone w/ 16MP Camera, White (Certified Refurbished)', 'B00YVVE7YO')
+('Samsung Galaxy S5 G900V Verizon 4G LTE Smartphone w/ 16MP Camera - Black - Verizon', 'B00LAEA84S')
+('Samsung Galaxy Grand Prime G531H 8GB - Factory Unlocked Smartphone (Gray)', 'B01F9D0IAY')
+('Samsung Galaxy Note 5 N920 32GB Unlocked Black No Warranty INTERNATIONAL VERSION NO WARRANTY', 'B013XB5L1A')
+('Samsung Galaxy J1 Mini J105B Unlocked GSM 3G Quad-Core Smartphone w/ 5MP Camera - Black', 'B01CUGUGU0')
+('Samsung Galaxy S3 Mini G730A Unlocked Cellphone, Blue', 'B00LB9ZJGO')
+('Samsung Galaxy S5, 16GB, White (Verizon Wireless)', 'B00IZ1Y2XM')
+('Samsung Sunburst SGH-A697 Cell Phone AT&T', 'B004ETB2KU')
+('Samsung Galaxy J7 SM- J700H/DS GSM Factory Unlocked Smartphone-Android 5.1- 5.5" , Gold', 'B016381R1I')
+('Samsung Galaxy S4 M919 Unlocked GSM 4G LTE Android Smartphone - White (Certified Refurbished)', 'B016X2S4FG')
+('Samsung Convoy 2 SCH-U660 Military Standard Rugged 3G Cell Phone Verizon Wireless', 'B006OU39QW')
+('Samsung Galaxy J7 J700H/DS Dual Sim Factory Unlocked Smart Phone - International Version - Black', 'B014IQMVHQ')
+
+
+LG TV
+LG Electronics 55UH7700 55-Inch 4K Ultra HD Smart LED TV (2016 Model) B01C9CZEW0
+LG Electronics 42LF5600 42-Inch 1080p LED TV (2015 Model) B00TRQPVKM
+LG Electronics 55LB5900 55-Inch 1080p 120Hz LED TV B00KVLT08G
+LG 55G2 55-Inch Cinema 3D 1080p 120Hz LED-LCD HDTV with Google TV and Six Pairs of 3D Glasses (2012 Model) B0074WVYNO
+LG 50UH5500 - 50-Inch 4K Ultra HD Smart LED TV w/ webOS 3.0 Flat Wall Mount Bundle includes TV, Slim Flat Wall Mount Ultimate Kit and 6 Outlet Power Strip with Dual USB Ports B01GGKFV6K
+LG Electronics 55LH5750 55-Inch 1080p Smart LED TV (2016 Model) B01CF1G3S4
+LG Electronics 43LH5000 43-Inch 1080p LED TV (2016 Model) B01CF3L4YA
+LG 32LH500B 32-Inch 720p HD LED TV (2016 Model) B01CF3L3RS
+LG Electronics 55UH6150 55-Inch 4K Ultra HD Smart LED TV (2016 Model) B01CHZXLG0
+LG Electronics 65UH6150 65-Inch 4K Ultra HD Smart LED TV (2016 Model) B01CHZXS9A
+LG 22LH4530 22-Inch 1080p LED TV (2016 Model) B01BV1PUZ6
+LG Electronics 55UF7600 55-Inch 4K Ultra HD Smart LED TV (2015 Model) B00V0R7ZK0
+LG Electronics 65UF6800 65-Inch 4K Ultra HD Smart LED TV (2015 Model) B00Y7XTEEY
+LG Electronics 43LH5700 / 43LH570A 43-Inch 1080p Smart LED TV (Certified Refurbished) B01H7XOSGO
+
+Sony TV
+Sony KDL48R510C 48-Inch (47.6" Measured Diagonally) 1080p Smart LED TV (2015 Model) B00V0K0X7Y
+Sony KDL55W650D 55-Inch Built-in Wi-Fi with Full HD TV (2016) B01F4SWA9Q
+Sony KDL40R510C 40-Inch 1080p Smart LED TV (2015 Model) B00V0K0Y00
+PlayStation TV B00KVMHSUM
+Sony R350D Series KDL-40R350D 39.5-Inch 1080p LED TV B01G7HWMBY
+Sony XBR-75X850D 75-Inch Class 4K HDR Ultra HD TV Flat Wall Mount Bundle includes Television, Flat Wall Mount Ultimate Kit and Power Strip with Dual USB Ports B01DWT0VVI
+PlayStation TV DualShock 3 Bundle B00KVMHVQ8
+Sony XBR65X950B 65-Inch 4K Ultra HD 3D Smart LED TV (2014 Model) B00J586V5Q
+Sony XBR55X900C 55-Inch 4K Ultra HD 3D Smart LED TV (2015 Model) B00R45XL64
+Sony XBR65X850C 65-Inch 4K Ultra HD 3D Smart LED TV (2015 Model) B00R45XH5Y
+NEW SONY LED TV REMOTE CONTROL RM-YD059 B00LF97QSY
+Sony XBR-43X800D - 43" Class 4K HDR Ultra HD TV w/ Slim Wall Mount Bundle includes TV, Slim Flat Wall Mount Ultimate Kit and 6 Outlet Power Strip with Dual USB Ports B01IS0FLKC
+XL-2400 Sony KDF 55E2000 TV Lamp by Sony B01AQ3L7QQ
+SONY XL2400 OEM PROJECTION TV LAMP EQUIVALENT WITH HOUSING B003BYQNKI
+
+
+Sony Phone
+Sony Xperia M C2004 Dual Sim Unlocked 5MP 3G WiFi International Stock No Warranty (Black) B00FB379OQ
+Sony Xperia M C2004 Dual Sim Unlocked 5MP 3G WiFi International Stock No Warranty (Purple) B00FB37ANG
+Sony Xperia XA unlocked smartphone,16GB Black (US Warranty) B01FJT7E0A
+Sony Ericsson Xperia S LT26i Unlocked Android 32gb Wifi Enabled 3g Phone, Black B00CSFF1M2
+Micro USB Android Charger Cord,Hankuke Multi length and color Sturdy Nylon Fabric Braided High Speed Data Sync USB Fast Charging Cable For Android Phones (1m black) B01AKIO1RO
+Sony Xperia E1 D2004 Unlocked GSM 4" Android Dual-Core Smartphone - Black (International Version) B013IP8IKM
+Sony Xperia Z5 Premium E6853 5.5-Inch 4K UHD Display Factory Unlocked (BLACK) - International Stock No Warranty B0171GEWPO
+SONY XPERIA M2 D2303 8GB BLACK FACTORY UNLOCKED SINGLE SIM LTE 4G 3G 2G CELL PHONE B00IYEUNMY
+Sony Portable AM/FM Transistor Radio with Built-in Speaker, Headphone Jack, LED Tuning Indicator & Carry Strap + Jumbl Over-The-Head Stereo Headphones & Alkaline Batteries Included - Compact Size B015JM7ILC
+Sony Xperia Z1 Compact 20MP, 3G, LTE, 16GB, Quad-Core Factory Unlocked World Mobile Phone - Black B00IOG7636
+Sony Xperia E3 D2203 4GB Unlocked GSM 4G LTE Android Smartphone - Black B00N8N483Q
+Unlocked GSM Sony Ericsson T303C Music cell phone B004709MCQ
+Sony Ericsson W580i Unlocked Cell Phone with 2 MP Camera, MP3/Video Player, Memory Stick Micro--U.S. Version with Warranty (White) B000VXCNOC
+
+LG Phone
+LG G Stylo LS770AVB Android 5.1 5.7-Inch HD IPS Display 8 MP Virgin Mobile Locked Phone with Stylus Pen B017HW88W0
+LG G3 Beat D722J 8GB Unlocked GSM Quad-Core Android Smartphone w/ 8MP Camera - Metallic Black - not 4G LTE (International Version) B018UT5NRC
+LG G4 Unlocked Smartphone with 32GB Internal Memory, 16 MP Camera and 5.5-Inch IPS Quantum Display for GSM and CDMA, US Warranty (Black Leather) B01774WPQ8
+LG G Flex 2 H950 32GB Unlocked GSM Curved P-OLED 4G LTE Octa-Core Android Phone w/ 13MP Camera - Black (International Version) B00XIP6BVQ
+LG Volt 2 Gray No-Contract Phone (Virgin Mobile) B017WI8QYE
+LG G3 VS985 32GB Verizon Wireless CDMA + GSM 4G LTE Smartphone w/ 13MP Camera - Black (Certified Refurbished) B01ETSI7MQ
+NET10 LG 441G B019MOASM4
+LG Cosmos 3 Prepaid Phone (Verizon Wireless) B00D7FMP1W
+LG V10 H962 Dual SIM 64GB 5.7-Inch Factory Unlocked Smartphone - International Version No Warranty (Ocean Blue) (Blue Blue) B01B39F49S
+LG K7 unlocked smartphone, 8GB Black (U.S. Warranty) B01C5QLN7A
+[Straighttalk] LG Treasure Armor Case [NakedShield] [Black/Black] Heavy Duty Armor [Holster with Kickstand] Phone Case - [Hunter Camouflage] for LG Treasure LTE L52VL B01H0U5MLY
+LG Tribute 2 LS665 Boost Mobile Cellular Smart Phone B013YSM9LC
+LG VX8350 Cell Phone, Bluetooth, Camera, Speaker, for Verizon - Red B007ANJ0EM
+

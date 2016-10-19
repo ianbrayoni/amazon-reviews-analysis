@@ -1,0 +1,55 @@
+Search indices(Product Group)
+['All','Wine','Wireless','ArtsAndCrafts','Miscellaneous','Electronics','Jewelry','MobileApps','Photo','Shoes','KindleStore','Automotive','Pantry','MusicalInstruments','DigitalMusic','GiftCards','FashionBaby','FashionGirls','GourmetFood','HomeGarden','MusicTracks','UnboxVideo','FashionWomen','VideoGames','FashionMen','Kitchen','Video','Software','Beauty','Grocery',,'FashionBoys','Industrial','PetSupplies','OfficeProducts','Magazines','Watches','Luggage','OutdoorLiving','Toys','SportingGoods','PCHardware','Movies','Books','Collectibles','Handmade','VHS','MP3Downloads','Fashion','Tools','Baby','Apparel','Marketplace','DVD','Appliances','Music','LawnAndGarden','WirelessAccessories','Blended','HealthPersonalCare','Classical']
+
+Items returned can be new, used, refurbished, and  collectible.
+
+Parameters to be specified along search indices:
+ 	'Keywords','Title','Power','BrowseNode','Artist','Author','Actor','Director','AudienceRating','Manufacturer','MusicLabel','Composer','Publisher','Brand','Conductor','Orchestra','TextStream','Cuisine','City','Neighborhood'.
+ 	
+ItemPage(Return a specified page of results).
+
+===>Use a blended search to look through multiple search indices for items that have “Mustang” in their name or description. A blended search looks through multiple search indices at the same time.
+	item = api.item_search('Blended', Keywords='Mustang')
+
+
+***Electronics****
+items = api.item_search('Electronics',Manufacturer='Samsung',Keywords='TV',Condition='New',Availability='Available')
+ print '%s(%s)' % (item.ItemAttributes.Title, item.ASIN)
+
+
+
+api.item_lookup('0316067938', ResponseGroup='Reviews',TruncateReviewsAt=256,IncludeReviewsSummary=False)
+
+===> all reviews link
+.asinReviewsSummary
+
+
+
+
+###############################################################
+admin site management
+***************************************************************
+Username: admin
+Email: admin@example.com
+Password: reviewsadmin
+
+###############################################################
+
+
+
+select * 
+from crawler_reviews 
+order by asin
+limit 5;
+
+select * 
+from products_products 
+order by asin
+limit 5;
+
+select p.asin asin, p.product_title product, count(c.review_text) reviews
+from products_products p
+left join crawler_reviews c
+on p.asin = c.asin
+where p.asin = c.asin
+group by p.asin, p.product_title
