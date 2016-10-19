@@ -37,5 +37,5 @@ ehthumbs.db
 Thumbs.db
 
 # dirs #
-########
-doc/* 
+#######
+.idea/* 
