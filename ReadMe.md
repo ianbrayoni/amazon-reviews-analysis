@@ -1,1 +1,3 @@
-Web application for sentiment analysis using supervised machine learning.
+Web application for sentiment analysis on e-commerce product reviews from Amazon using supervised machine learning.
+
+
