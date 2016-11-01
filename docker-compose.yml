@@ -1,0 +1,26 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.5.4
+    environment:
+      - POSTGRES_DB=reviews_analysis
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=reviews_analysis
+    ports:
+      - 5444:5432
+
+  web_app:
+    build: .
+    depends_on:
+      - db
+    volumes:
+      - ./:/opt/app
+    links:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=review_analysis.settings.docker_settings
+    ports:
+      - 80:3000
+
+
+
