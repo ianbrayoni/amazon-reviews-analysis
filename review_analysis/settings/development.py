@@ -14,3 +14,4 @@ DATABASES = {
         'PORT': '',
     }
 }
+

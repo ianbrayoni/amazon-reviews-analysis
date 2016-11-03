@@ -6,4 +6,6 @@ COPY ./requirements /tmp
 RUN pip install -r /tmp/development.txt
 ADD . /opt/app
 
-CMD ["/bin/bash", "./devops/run.sh"]
+CMD ./wait-for-it.sh db:5432 \
+    && python manage.py migrate \
+    && python manage.py runserver 0.0.0.0:3000

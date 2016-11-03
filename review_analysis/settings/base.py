@@ -19,6 +19,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.dirname(BASE_DIR)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
+# Reference Scrapy directory with config
+SCRAPY_APP_DIR = os.path.join(PROJECT_DIR, "amazon_crawler")
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -29,8 +32,6 @@ SECRET_KEY = '9_r!3zx6zkj5j_y7z!yrvbbv6@e-3(y!on8!tyw+lb$2!0ec9d'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, 'static'))
 
 # Application definition
 
@@ -134,5 +135,5 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
+STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, 'static'))
 STATIC_URL = '/static/'
