@@ -74,6 +74,8 @@ def itemLookUp(request):
             for item in itemLookup.Items.Item:
                 post.product_title = item.ItemAttributes.Title
 
+            # check if asin already exists
+
             # find crawler cfg
             os.chdir(settings.SCRAPY_APP_DIR)
             # scrapy crawl amazon_spider -a
