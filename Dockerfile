@@ -1,4 +1,5 @@
-FROM python:2.7
+FROM trackmaven/nltk
+
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /opt/app
 WORKDIR /opt/app

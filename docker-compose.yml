@@ -2,6 +2,8 @@ version: '2'
 services:
   db:
     image: postgres:9.5.4
+    volumes:
+      - /var/lib/postgresql
     environment:
       - POSTGRES_DB=reviews_analysis
       - POSTGRES_PASSWORD=postgres
@@ -16,7 +18,7 @@ services:
     volumes:
       - ./:/opt/app
     links:
-      - db
+      - db:db
     environment:
       - DJANGO_SETTINGS_MODULE=review_analysis.settings.docker_settings
     ports:

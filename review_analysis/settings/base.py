@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'review_analysis.apps.crawler',
     'review_analysis.apps.products',
+    'review_analysis.apps.classifier',
 ]
 
 MIDDLEWARE = [
