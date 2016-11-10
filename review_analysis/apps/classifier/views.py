@@ -2,7 +2,9 @@
 from django.shortcuts import render
 
 import nltk
+import cPickle
 from django.db import connection
+from django.conf import settings
 
 
 def pre_process_manually_trained_data():
@@ -171,10 +173,18 @@ training_set = nltk.classify.apply_features(
 # train our classifier.
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
+# save classifier object to avoid retraining
+save_classifier = open(settings.CLASSIFIER_OBJECT, "wb")
+cPickle.dump(classifier, save_classifier)
+save_classifier.close()
+
 # Take it for a spin
-# tweet = 'Larry is my friend'
-# print classifier.classify(extract_features(tweet.split()))
+# from review_analysis.apps.classifier.views import classifier
+# review = 'Larry is my friend'
+# print classifier.classify(extract_word_features(review.split()))
 # positive
+
+
 
 
 
