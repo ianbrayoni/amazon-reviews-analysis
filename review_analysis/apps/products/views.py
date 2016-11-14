@@ -3,12 +3,12 @@
 import amazonproduct
 import subprocess
 import os
-import cPickle
+# import cPickle
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
 from .forms import ItemSearchForm, ItemLookUpForm
-from review_analysis.apps.classifier.views import extract_word_features
+# from review_analysis.apps.classifier.views import extract_word_features
 
 config = {
     'access_key': 'AKIAIISQG525FSEYBPZA',
@@ -110,20 +110,20 @@ def to_unicode(obj, encoding='utf-8'):
     return obj
 
 
-def load_classifier(f):
-    """
-    `settings.CLASSIFIER_OBJECT`
-
-    Classifier saved to byte stream from `apps.classifier.views`
-    to avoid retraining every time.
-
-    The classifier is loaded here to allow sentiment analysis
-    :return: classifier object
-    """
-    classifier_f = open(f, "rb")
-    classifier = cPickle.load(classifier_f)
-    classifier_f.close()
-
-    return classifier
+# def load_classifier(f):
+#     """
+#     `settings.CLASSIFIER_OBJECT`
+#
+#     Classifier saved to byte stream from `apps.classifier.views`
+#     to avoid retraining every time.
+#
+#     The classifier is loaded here to allow sentiment analysis
+#     :return: classifier object
+#     """
+#     classifier_f = open(f, "rb")
+#     classifier = cPickle.load(classifier_f)
+#     classifier_f.close()
+#
+#     return classifier
 
 

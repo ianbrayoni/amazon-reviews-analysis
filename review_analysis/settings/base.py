@@ -137,4 +137,5 @@ STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, 'static'))
 STATIC_URL = '/static/'
 
 # Classifier loaded to file to avoid retraining
-CLASSIFIER_OBJECT = 'naivebayes.pickle'
+CLASSIFIER_OBJECT = os.path.join(PROJECT_DIR, "naivebayes.pickle")
+
