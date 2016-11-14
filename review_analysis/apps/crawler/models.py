@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from review_analysis.apps.classifier.models import Sentiment
+# from review_analysis.apps.classifier.models import Sentiment
 
 
 # Create your models here.

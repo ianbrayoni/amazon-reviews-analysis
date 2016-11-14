@@ -7,7 +7,10 @@ import os
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
+from django.db.models import Count
 from .forms import ItemSearchForm, ItemLookUpForm
+from .models import Products
+from review_analysis.apps.crawler.models import Reviews
 # from review_analysis.apps.classifier.views import extract_word_features
 
 config = {
@@ -32,13 +35,13 @@ def itemSearch(request):
         form = ItemSearchForm(request.POST)
 
         if form.is_valid():
-            productGroup = form.cleaned_data['productGroup']
+            product_group = form.cleaned_data['productGroup']
             manufacturer = form.cleaned_data['manufacturer']
             keywords = form.cleaned_data['keywords']
             condition = form.cleaned_data['condition']
 
             # Search Amazon Product API
-            items = api.item_search(productGroup, Manufacturer=manufacturer,
+            items = api.item_search(product_group, Manufacturer=manufacturer,
                                     Keywords=keywords, Condition=condition)
 
             # to_unicode takes care of non-ascii characters
@@ -69,14 +72,12 @@ def itemLookUp(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.asin = form.cleaned_data['asin']
-            post.reviews_url = makeUrl(post.asin)
+            post.reviews_url = make_url(post.asin)
 
             # get product title
-            itemLookup = api.item_lookup(post.asin)
-            for item in itemLookup.Items.Item:
+            item_lookup = api.item_lookup(post.asin)
+            for item in item_lookup.Items.Item:
                 post.product_title = item.ItemAttributes.Title
-
-            # check if asin already exists
 
             # find crawler cfg
             os.chdir(settings.SCRAPY_APP_DIR)
@@ -90,7 +91,24 @@ def itemLookUp(request):
             # TODO : what if item already saved
             post.save()
 
-        return HttpResponse("Finished processing: " + post.reviews_url)
+            # display summary from scrapped data
+            reviews_summary = Reviews.objects.filter(post.asin).\
+                values('sentiment').\
+                annotate(total=Count('asin')).order_by('sentiment')
+
+            product_title = (Products.objects.get(asin__exact=post.asin)).\
+                product_title
+            asin = post.asin
+
+            return_dict = {
+                'asin': asin,
+                'product_title': product_title,
+                'reviews_summary': reviews_summary
+            }
+
+        # return HttpResponse("Finished processing: " + post.reviews_url)
+        return render(request, 'products/itemSummary.html',
+                      {'return_dict': return_dict})
 
     else:
         form = ItemLookUpForm()
@@ -98,7 +116,7 @@ def itemLookUp(request):
     return render(request, 'products/itemLookUp.html', {'form': form})
 
 
-def makeUrl(asin):
+def make_url(asin):
     # https://www.amazon.com/product-reviews/B01FFQEMVQ/
     return "https://www.amazon.com/product-reviews/" + asin + "/"
 
@@ -110,20 +128,5 @@ def to_unicode(obj, encoding='utf-8'):
     return obj
 
 
-# def load_classifier(f):
-#     """
-#     `settings.CLASSIFIER_OBJECT`
-#
-#     Classifier saved to byte stream from `apps.classifier.views`
-#     to avoid retraining every time.
-#
-#     The classifier is loaded here to allow sentiment analysis
-#     :return: classifier object
-#     """
-#     classifier_f = open(f, "rb")
-#     classifier = cPickle.load(classifier_f)
-#     classifier_f.close()
-#
-#     return classifier
 
 
