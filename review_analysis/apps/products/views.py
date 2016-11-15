@@ -92,10 +92,11 @@ def itemLookUp(request):
             post.save()
 
             # display summary from scrapped data
-            reviews_summary = Reviews.objects.filter(post.asin).\
-                values('sentiment').\
-                annotate(total=Count('asin')).order_by('sentiment')
-
+            reviews_summary = list(Reviews.objects.filter(asin=post.asin).
+                                   values('sentiment').
+                                   annotate(total=Count('asin')).
+                                   order_by('sentiment'))
+            total_reviews = Reviews.objects.filter(asin=post.asin).count()
             product_title = (Products.objects.get(asin__exact=post.asin)).\
                 product_title
             asin = post.asin
@@ -103,7 +104,8 @@ def itemLookUp(request):
             return_dict = {
                 'asin': asin,
                 'product_title': product_title,
-                'reviews_summary': reviews_summary
+                'total_reviews_extracted': total_reviews,
+                'sentiment_analysis': reviews_summary
             }
 
         # return HttpResponse("Finished processing: " + post.reviews_url)

@@ -174,9 +174,9 @@ training_set = nltk.classify.apply_features(
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
 # save classifier object to avoid retraining
-save_classifier = open(settings.CLASSIFIER_OBJECT, "wb")
-cPickle.dump(classifier, save_classifier)
-save_classifier.close()
+# save_classifier = open(settings.CLASSIFIER_OBJECT, "wb")
+# cPickle.dump(classifier, save_classifier)
+# save_classifier.close()
 
 # Take it for a spin
 # from review_analysis.apps.classifier.views import classifier
