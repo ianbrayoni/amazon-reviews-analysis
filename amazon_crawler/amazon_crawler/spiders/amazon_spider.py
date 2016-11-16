@@ -4,6 +4,7 @@ import scrapy
 import cPickle
 from django.conf import settings
 from review_analysis.apps.classifier.views import extract_word_features
+from review_analysis.apps.classifier.models import Sentiment
 from amazon_crawler.items import AmazonCrawlerItem
 
 
@@ -20,8 +21,13 @@ class AmazonSpiderSpider(scrapy.Spider):
         yield scrapy.Request(self.start_urls[0], callback=self.parse_reviews)
 
     def parse_reviews(self, response):
-        # retrieve reviews
+        """
+        Retrieve reviews and create `item` object to save in db
+        :param response:
+        :return:
+        """
         classifier = load_classifier(settings.CLASSIFIER_OBJECT)
+
         try:            
             reviews = response.css('.review-text').xpath('string()').extract()
             
@@ -30,8 +36,13 @@ class AmazonSpiderSpider(scrapy.Spider):
                 item['asin'] = ((self.start_urls[0]).
                                 split('product-reviews')[1]).strip('/')
                 item['review_text'] = review
-                item['sentiment'] = classifier.\
-                    classify(extract_word_features(review.split()))
+
+                sentiment = sentiment_reference(
+                    classifier.classify(extract_word_features(review.split()))
+                )
+
+                item['sentiment'] = Sentiment.objects.get(id=sentiment)
+
                 yield item            
 
             next_page = response.\
@@ -50,7 +61,7 @@ def load_classifier(f):
     `settings.CLASSIFIER_OBJECT`
 
     Classifier saved to byte stream from `apps.classifier.views`
-    to avoid retraining every time.
+    to avoid retraining it every time.
 
     The classifier is loaded here to allow sentiment analysis
     :return: classifier object
@@ -62,11 +73,19 @@ def load_classifier(f):
     return classifier
 
 
-# def sentiment_reference(sentiment):
-#     return {
-#         'positive': 1,
-#         'negative': 2,
-#         'advice': 3,
-#         'neutral': 4
-#     }.get(sentiment)
+def sentiment_reference(sentiment):
+    """
+    This function is to reflect the normalized db structure
+    We store integer referencing various sentiment types
+
+    :param sentiment: sentiment as text e.g positive
+    :return: integer referencing sentiment text e.g 1
+    """
+    return int({
+        'positive': 1,
+        'negative': 2,
+        'advice': 3,
+        'neutral': 4,
+        'none': 5  # no sentiment
+    }.get(sentiment, 5))
 
