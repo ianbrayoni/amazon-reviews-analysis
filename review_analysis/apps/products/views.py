@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.conf import settings
-from .forms import ItemSearchForm, ItemLookUpForm
 import amazonproduct
 import subprocess
 import os
+# import cPickle
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.conf import settings
+from django.db.models import Count
+from .forms import ItemSearchForm, ItemLookUpForm
+from .models import Products
+from review_analysis.apps.crawler.models import Reviews
+# from review_analysis.apps.classifier.views import extract_word_features
 
 config = {
     'access_key': 'AKIAIISQG525FSEYBPZA',
@@ -30,13 +35,13 @@ def itemSearch(request):
         form = ItemSearchForm(request.POST)
 
         if form.is_valid():
-            productGroup = form.cleaned_data['productGroup']
+            product_group = form.cleaned_data['productGroup']
             manufacturer = form.cleaned_data['manufacturer']
             keywords = form.cleaned_data['keywords']
             condition = form.cleaned_data['condition']
 
             # Search Amazon Product API
-            items = api.item_search(productGroup, Manufacturer=manufacturer,
+            items = api.item_search(product_group, Manufacturer=manufacturer,
                                     Keywords=keywords, Condition=condition)
 
             # to_unicode takes care of non-ascii characters
@@ -67,14 +72,12 @@ def itemLookUp(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.asin = form.cleaned_data['asin']
-            post.reviews_url = makeUrl(post.asin)
+            post.reviews_url = make_url(post.asin)
 
             # get product title
-            itemLookup = api.item_lookup(post.asin)
-            for item in itemLookup.Items.Item:
+            item_lookup = api.item_lookup(post.asin)
+            for item in item_lookup.Items.Item:
                 post.product_title = item.ItemAttributes.Title
-
-            # check if asin already exists
 
             # find crawler cfg
             os.chdir(settings.SCRAPY_APP_DIR)
@@ -88,7 +91,26 @@ def itemLookUp(request):
             # TODO : what if item already saved
             post.save()
 
-        return HttpResponse("Finished processing: " + post.reviews_url)
+            # display summary from scrapped data
+            reviews_summary = list(Reviews.objects.filter(asin=post.asin).
+                                   values('sentiment').
+                                   annotate(total=Count('asin')).
+                                   order_by('sentiment'))
+            total_reviews = Reviews.objects.filter(asin=post.asin).count()
+            product_title = (Products.objects.get(asin__exact=post.asin)).\
+                product_title
+            asin = post.asin
+
+            return_dict = {
+                'asin': asin,
+                'product_title': product_title,
+                'total_reviews_extracted': total_reviews,
+                'sentiment_analysis': reviews_summary
+            }
+
+        # return HttpResponse("Finished processing: " + post.reviews_url)
+        return render(request, 'products/itemSummary.html',
+                      {'return_dict': return_dict})
 
     else:
         form = ItemLookUpForm()
@@ -96,7 +118,7 @@ def itemLookUp(request):
     return render(request, 'products/itemLookUp.html', {'form': form})
 
 
-def makeUrl(asin):
+def make_url(asin):
     # https://www.amazon.com/product-reviews/B01FFQEMVQ/
     return "https://www.amazon.com/product-reviews/" + asin + "/"
 
@@ -106,3 +128,7 @@ def to_unicode(obj, encoding='utf-8'):
         if not isinstance(obj, unicode):
             obj = unicode(obj, encoding)
     return obj
+
+
+
+

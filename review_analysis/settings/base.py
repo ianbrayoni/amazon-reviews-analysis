@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'review_analysis.apps.crawler',
     'review_analysis.apps.products',
+    'review_analysis.apps.classifier',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +78,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'review_analysis.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -118,7 +118,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -132,8 +131,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, 'static'))
 STATIC_URL = '/static/'
+
+# Classifier loaded to file to avoid retraining
+CLASSIFIER_OBJECT = os.path.join(PROJECT_DIR, "naivebayes.pickle")
+
