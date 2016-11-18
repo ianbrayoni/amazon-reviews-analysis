@@ -1,10 +1,11 @@
 # coding=utf-8
-from django.shortcuts import render
+# from django.shortcuts import render
 
 import nltk
-import cPickle
-from django.db import connection
-from django.conf import settings
+# import cPickle
+# from django.db import connection
+# from django.conf import settings
+from .models import LabeledData
 
 
 def pre_process_manually_trained_data():
@@ -13,12 +14,21 @@ def pre_process_manually_trained_data():
     and create a list of tuples(words, sentiment)
     :return: list of tuples(words, sentiment)
     """
-    cursor = connection.cursor()
-    cursor.execute("select t2.review_text, t1.sentiment "
-                   "from classifier_labeleddata t2 "
-                   "inner join classifier_sentiment t1 "
-                   "on t2.sentiment_id = t1.id")
-    labeled_data = cursor.fetchall()
+    # cursor = connection.cursor()
+    # cursor.execute("select t2.review_text, t1.sentiment "
+    #                "from classifier_labeleddata t2 "
+    #                "inner join classifier_sentiment t1 "
+    #                "on t2.sentiment_id = t1.id")
+    # labeled_data = cursor.fetchall()
+    labeled_data = list(
+        LabeledData.objects.values('sentiment__sentiment', 'review_text'))
+
+    pre_processed_data = []
+
+    for data in labeled_data:
+        words = data.get('review_text')
+        sentiment = data.get('sentiment__sentiment')
+        pre_processed_data.append((words, sentiment))
 
     # a single list of tuples each containing two elements.
     # First element is an array containing the words and second element
@@ -26,7 +36,8 @@ def pre_process_manually_trained_data():
     # We get rid of the words smaller than 2 characters
     # and we use lowercase for everything.
     processed_data = []
-    for (words, sentiment) in labeled_data:
+
+    for (words, sentiment) in pre_processed_data:
         words_filtered = [word.lower() for word in words.split()
                           if len(word) >= 3]
         processed_data.append((words_filtered, sentiment))
@@ -171,7 +182,7 @@ training_set = nltk.classify.apply_features(
 
 
 # train our classifier.
-classifier = nltk.NaiveBayesClassifier.train(training_set)
+# classifier = nltk.NaiveBayesClassifier.train(training_set)
 
 # save classifier object to avoid retraining
 # save_classifier = open(settings.CLASSIFIER_OBJECT, "wb")
