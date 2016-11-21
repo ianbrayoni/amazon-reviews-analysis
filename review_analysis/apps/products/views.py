@@ -3,6 +3,7 @@
 import amazonproduct
 import subprocess
 import os
+from amazonproduct.errors import AWSError
 # import cPickle
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -14,10 +15,10 @@ from review_analysis.apps.crawler.models import Reviews
 # from review_analysis.apps.classifier.views import extract_word_features
 
 config = {
-    'access_key': 'AKIAIISQG525FSEYBPZA',
-    'secret_key': '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',
-    'associate_tag': 'revanalytics2-20',
-    'locale': 'us'
+    'access_key': settings.AWS_ACCESS_KEY,
+    'secret_key': settings.AWS_SECRET_KEY,
+    'associate_tag': settings.AWS_ASSOCIATE_TAG,
+    'locale': settings.AWS_PREFERED_LOCALE
 }
 
 api = amazonproduct.API(cfg=config)
@@ -41,16 +42,21 @@ def itemSearch(request):
             condition = form.cleaned_data['condition']
 
             # Search Amazon Product API
-            items = api.item_search(product_group, Manufacturer=manufacturer,
-                                    Keywords=keywords, Condition=condition)
-
-            # to_unicode takes care of non-ascii characters
-            inventory = []
-            for item in items:
-                title = to_unicode(item.ItemAttributes.Title)
-                item_id = to_unicode(item.ASIN)
-                item_tuple = (title, item_id)
-                inventory.append(item_tuple)
+            try:
+                items = api.item_search(product_group,
+                                        Manufacturer=manufacturer,
+                                        Keywords=keywords, Condition=condition)
+            except AWSError, e:
+                message = settings.AWS_ERROR_RESPONSE
+                return HttpResponse(message + str(e))
+            else:
+                # to_unicode takes care of non-ascii characters
+                inventory = []
+                for item in items:
+                    title = to_unicode(item.ItemAttributes.Title)
+                    item_id = to_unicode(item.ASIN)
+                    item_tuple = (title, item_id)
+                    inventory.append(item_tuple)
 
             return render(request, 'products/itemResults.html',
                           {'inventory': inventory})
@@ -75,21 +81,25 @@ def itemLookUp(request):
             post.reviews_url = make_url(post.asin)
 
             # get product title
-            item_lookup = api.item_lookup(post.asin)
-            for item in item_lookup.Items.Item:
-                post.product_title = item.ItemAttributes.Title
+            try:
+                item_lookup = api.item_lookup(post.asin)
+                for item in item_lookup.Items.Item:
+                    post.product_title = item.ItemAttributes.Title
+            except AWSError, e:
+                message = settings.AWS_ERROR_RESPONSE
+                return HttpResponse(message + str(e))
+            else:
+                # find crawler cfg
+                os.chdir(settings.SCRAPY_APP_DIR)
+                # scrapy crawl amazon_spider -a
+                # start_url="https://www.amazon.com/product-reviews/B01FFQEMVQ/"
+                cmd = 'scrapy crawl amazon_spider -a start_url="%s"' \
+                      % post.reviews_url
+                subprocess.call(cmd, shell=True)
 
-            # find crawler cfg
-            os.chdir(settings.SCRAPY_APP_DIR)
-            # scrapy crawl amazon_spider -a
-            # start_url="https://www.amazon.com/product-reviews/B01FFQEMVQ/"
-            cmd = 'scrapy crawl amazon_spider -a start_url="%s"' \
-                  % post.reviews_url
-            subprocess.call(cmd, shell=True)
-
-            # TODO : save item ; B01H7XOSGO - what if they have no reviews?
-            # TODO : what if item already saved
-            post.save()
+                # TODO : save item ; B01H7XOSGO - what if they have no reviews?
+                # TODO : what if item already saved
+                post.save()
 
             # display summary from scrapped data
             reviews_summary = list(Reviews.objects.filter(asin=post.asin).
