@@ -93,9 +93,9 @@ def itemLookUp(request):
 
             # display summary from scrapped data
             reviews_summary = list(Reviews.objects.filter(asin=post.asin).
-                                   values('sentiment').
+                                   values('sentiment__sentiment').
                                    annotate(total=Count('asin')).
-                                   order_by('sentiment'))
+                                   order_by('sentiment__sentiment'))
             total_reviews = Reviews.objects.filter(asin=post.asin).count()
             product_title = (Products.objects.get(asin__exact=post.asin)).\
                 product_title

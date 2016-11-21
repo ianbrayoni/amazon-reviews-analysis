@@ -8,8 +8,8 @@ from django.db import models
 class Sentiment(models.Model):
     sentiment = models.TextField()
 
-    def __str__(self):  # __unicode__ on Python 2
-        return self.sentiment
+    def __unicode__(self):
+        return str(self.sentiment)
 
 
 class LabeledData(models.Model):
@@ -17,6 +17,6 @@ class LabeledData(models.Model):
     review_text = models.TextField()
     sentiment = models.ForeignKey(Sentiment)
 
-    def __str__(self):  # __unicode__ on Python 2
-        return self.asin
+    def __unicode__(self):
+        return str(self.asin)
 
