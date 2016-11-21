@@ -12,7 +12,13 @@ class AmazonSpiderSpider(scrapy.Spider):
     """ spider to crawl product reviews from amazon.com"""
     name = "amazon_spider"
     
-    def __init__(self, *args, **kwargs): 
+    def __init__(self, *args, **kwargs):
+        """
+        Constructor receiving urls.
+
+        :param args: product url
+        :param kwargs:
+        """
         super(AmazonSpiderSpider, self).__init__(*args, **kwargs) 
 
         self.start_urls = [kwargs.get('start_url')] 
