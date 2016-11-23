@@ -28,10 +28,16 @@ api = amazonproduct.API(cfg=config)
 
 
 def index(request):
-    return HttpResponse("Index Page.")
+    return HttpResponse("Amazon Synthesizer index page.")
 
 
-def itemSearch(request):
+def search(request):
+    """
+    Search for products using allowed params.
+
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         form = ItemSearchForm(request.POST)
 
@@ -58,20 +64,26 @@ def itemSearch(request):
                     item_tuple = (title, item_id)
                     inventory.append(item_tuple)
 
-            return render(request, 'products/itemResults.html',
+            return render(request, 'products/results.html',
                           {'inventory': inventory})
 
     else:
         form = ItemSearchForm()
 
-    return render(request, 'products/itemSearch.html', {'form': form})
+    return render(request, 'products/search.html', {'form': form})
 
 
 def results(request):
     return HttpResponse("Results Page.")
 
 
-def itemLookUp(request):
+def lookup(request):
+    """
+    Look up asin to retrieve reviews
+
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         form = ItemLookUpForm(request.POST)
 
@@ -99,33 +111,39 @@ def itemLookUp(request):
 
                 # TODO : save item ; B01H7XOSGO - what if they have no reviews?
                 # TODO : what if item already saved
-                post.save()
+                # post.save()
+                # post, created = Products.objects.get_or_create()
+                #
+                post_obj, created = Products.objects.get_or_create(
+                    asin=post.asin,
+                    reviews_url=post.reviews_url,
+                    product_title=post.product_title)
 
             # display summary from scrapped data
-            reviews_summary = list(Reviews.objects.filter(asin=post.asin).
-                                   values('sentiment__sentiment').
-                                   annotate(total=Count('asin')).
-                                   order_by('sentiment__sentiment'))
-            total_reviews = Reviews.objects.filter(asin=post.asin).count()
-            product_title = (Products.objects.get(asin__exact=post.asin)).\
-                product_title
-            asin = post.asin
+            if post_obj is not None:
+                reviews_summary = list(Reviews.objects.filter(asin=post.asin).
+                                       values('sentiment__sentiment').
+                                       annotate(total=Count('asin')).
+                                       order_by('sentiment__sentiment'))
+                total_reviews = Reviews.objects.filter(asin=post.asin).count()
+                product_title = (Products.objects.get(asin__exact=post.asin)).\
+                    product_title
+                asin = post.asin
 
-            return_dict = {
-                'asin': asin,
-                'product_title': product_title,
-                'total_reviews_extracted': total_reviews,
-                'sentiment_analysis': reviews_summary
-            }
+                return_dict = {
+                    'asin': asin,
+                    'product_title': product_title,
+                    'total_reviews_extracted': total_reviews,
+                    'sentiment_analysis': reviews_summary
+                }
 
-        # return HttpResponse("Finished processing: " + post.reviews_url)
-        return render(request, 'products/itemSummary.html',
-                      {'return_dict': return_dict})
+                return render(request, 'products/summary.html',
+                              {'return_dict': return_dict})
 
     else:
         form = ItemLookUpForm()
 
-    return render(request, 'products/itemLookUp.html', {'form': form})
+    return render(request, 'products/lookup.html', {'form': form})
 
 
 def make_url(asin):

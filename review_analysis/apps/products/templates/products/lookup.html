@@ -2,7 +2,7 @@
 
 {% block content %}
 	<h1>Item LookUp</h1>
-	<form action="/products/itemLookUp/" method="post">
+	<form action="/products/lookup/" method="post">
 		{% csrf_token %}
 		{{ form }}
 		<input type="submit" value="Submit">

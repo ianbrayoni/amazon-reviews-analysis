@@ -6,8 +6,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),   
-    url(r'^itemSearch/', views.itemSearch, name='itemSearch'), 
-    url(r'^itemLookUp/', views.itemLookUp, name='itemLookUp'),
-    # url(r'^itemResults/', views.itemResults, name='itemResults'),
-    url(r'^results/', views.results, name='results'),  
+    url(r'^search/', views.search, name='search'),
+    url(r'^lookup/', views.lookup, name='lookup'),
+    url(r'^results/', views.results, name='results'),
 ]

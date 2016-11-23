@@ -5,6 +5,7 @@ import cPickle
 from django.conf import settings
 from review_analysis.apps.classifier.views import extract_word_features
 from review_analysis.apps.classifier.models import Sentiment
+from review_analysis.apps.products.models import Products
 from amazon_crawler.items import AmazonCrawlerItem
 
 
@@ -21,10 +22,25 @@ class AmazonSpiderSpider(scrapy.Spider):
         """
         super(AmazonSpiderSpider, self).__init__(*args, **kwargs) 
 
-        self.start_urls = [kwargs.get('start_url')] 
+        self.start_urls = [kwargs.get('start_url')]
+        self.asin = ((self.start_urls[0]).split('product-reviews')[1]).strip(
+            '/')
 
     def parse(self, response):
-        yield scrapy.Request(self.start_urls[0], callback=self.parse_reviews)
+        """
+        Fn to call parse_reviews.
+        If asin already exists in the db - it has already been scrapped.
+        No need to re-parse it.
+
+        :param response:
+        :return:
+        """
+        product_obj = Products.objects.get(asin=self.asin)
+        if product_obj is None:
+            yield scrapy.Request(self.start_urls[0],
+                                 callback=self.parse_reviews)
+        else:
+            pass
 
     def parse_reviews(self, response):
         """
@@ -39,8 +55,7 @@ class AmazonSpiderSpider(scrapy.Spider):
             
             for review in reviews:
                 item = AmazonCrawlerItem()
-                item['asin'] = ((self.start_urls[0]).
-                                split('product-reviews')[1]).strip('/')
+                item['asin'] = self.asin
                 item['review_text'] = review
 
                 sentiment = sentiment_reference(
