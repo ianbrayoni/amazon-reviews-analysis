@@ -17,8 +17,9 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+# from review_analysis.apps.products import views as product_views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls), 
-    url(r'^products/', include('review_analysis.apps.products.urls')),
+    url(r'^admin/', admin.site.urls),
+    url(r'', include('review_analysis.apps.products.urls')),
 ]

@@ -6,7 +6,7 @@ from django.conf import settings
 from review_analysis.apps.classifier.views import extract_word_features
 from review_analysis.apps.classifier.models import Sentiment
 from review_analysis.apps.products.models import Products
-from amazon_crawler.items import AmazonCrawlerItem
+from amazon_crawler.items import AmazonCrawlerItem # noqa
 
 
 class AmazonSpiderSpider(scrapy.Spider):

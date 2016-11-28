@@ -22,7 +22,7 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=review_analysis.settings.docker_settings
     ports:
-      - 80:3000
+      - 8080:3000
 
 
 

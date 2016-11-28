@@ -28,7 +28,9 @@ api = amazonproduct.API(cfg=config)
 
 
 def index(request):
-    return HttpResponse("Amazon Synthesizer index page.")
+    context = "Amazon Synthesizer.\n"
+    return render(request, 'index.html',
+                  {'context': context})
 
 
 def search(request):
@@ -59,22 +61,23 @@ def search(request):
                 # to_unicode takes care of non-ascii characters
                 inventory = []
                 for item in items:
-                    title = to_unicode(item.ItemAttributes.Title)
-                    item_id = to_unicode(item.ASIN)
-                    item_tuple = (title, item_id)
-                    inventory.append(item_tuple)
+                    # title = to_unicode(item.ItemAttributes.Title)
+                    # item_id = to_unicode(item.ASIN)
+                    # item_tuple = (title, item_id)
+                    # inventory.append(item_tuple)
+                    inventory.append(item)
 
-            return render(request, 'products/results.html',
+            return render(request, 'results.html',
                           {'inventory': inventory})
 
     else:
         form = ItemSearchForm()
 
-    return render(request, 'products/search.html', {'form': form})
+    return render(request, 'search.html', {'form': form})
 
 
-def results(request):
-    return HttpResponse("Results Page.")
+# def results(request):
+#     return HttpResponse("Results Page.")
 
 
 def lookup(request):
@@ -109,11 +112,7 @@ def lookup(request):
                       % post.reviews_url
                 subprocess.call(cmd, shell=True)
 
-                # TODO : save item ; B01H7XOSGO - what if they have no reviews?
-                # TODO : what if item already saved
-                # post.save()
-                # post, created = Products.objects.get_or_create()
-                #
+                # save product
                 post_obj, created = Products.objects.get_or_create(
                     asin=post.asin,
                     reviews_url=post.reviews_url,
@@ -137,17 +136,17 @@ def lookup(request):
                     'sentiment_analysis': reviews_summary
                 }
 
-                return render(request, 'products/summary.html',
+                return render(request, 'summary.html',
                               {'return_dict': return_dict})
 
     else:
         form = ItemLookUpForm()
 
-    return render(request, 'products/lookup.html', {'form': form})
+    return render(request, 'lookup.html', {'form': form})
 
 
 def make_url(asin):
-    # https://www.amazon.com/product-reviews/B01FFQEMVQ/
+    # https://www.amazon.com/product-reviews/B01H7XOSGO/
     return "https://www.amazon.com/product-reviews/" + asin + "/"
 
 

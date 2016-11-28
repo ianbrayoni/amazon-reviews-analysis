@@ -45,4 +45,4 @@ migrations/*
 .idea/*
 train_data/*
 .vagrant/*
-static/
+review_analysis/static/

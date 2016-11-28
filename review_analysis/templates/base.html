@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Amazon Synthesizer</title>
+
+    {% load static %}
+
+    <link href="{% static "site/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "site/font-awesome/css/font-awesome.css" %}" rel="stylesheet">
+    <link href="{% static "site/css/animate.css" %}" rel="stylesheet">
+    <link href="{% static "site/css/style.css" %}" rel="stylesheet">
+
+</head>
+
+<body class="top-navigation">
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom white-bg">
+        <nav class="navbar navbar-static-top" role="navigation">
+            <div class="navbar-header">
+                <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                    <i class="fa fa-reorder"></i>
+                </button>
+                <a href="{% url 'index' %}" class="navbar-brand">Amazon Synthesizer</a>
+            </div>
+            <div class="navbar-collapse collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'search' %}">Product Search</a></li>
+                    <li><a href="{% url 'lookup' %}">Lookup Product</a></li>
+                </ul>
+            </div>
+        </nav>
+        </div>
+        <div class="wrapper wrapper-content">
+
+            <div class="container">
+                {% block content %}
+                {% endblock %}
+            </div>
+
+        </div>
+        <div class="footer">
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2015
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+
+    <!-- Mainly scripts -->
+{#    <script src="{% static "site/js/jquery-2.1.1.js" %}"></script>#}
+{#    <script src="{% static "site/js/bootstrap.min.js" %}"></script>#}
+{#    <script src="{% static "site/js/plugins/metisMenu/jquery.metisMenu.js" %}"></script>#}
+{#    <script src="{% static "site/js/plugins/slimscroll/jquery.slimscroll.min.js" %}"></script>#}
+{##}
+{#    <!-- Custom and plugin javascript -->#}
+{#    <script src="{% static "site/js/inspinia.js" %}"></script>#}
+{#    <script src="{% static "site/js/plugins/pace/pace.min.js" %}"></script>#}
+{##}
+{#    <!-- Flot -->#}
+{#    <script src="{% static "site/js/plugins/flot/jquery.flot.js" %}"></script>#}
+{#    <script src="{% static "site/js/plugins/flot/jquery.flot.tooltip.min.js" %}"></script>#}
+{#    <script src="{% static "site/js/plugins/flot/jquery.flot.resize.js" %}"></script>#}
+{##}
+{#    <!-- ChartJS-->#}
+{#    <script src="{% static "site/js/plugins/chartJs/Chart.min.js" %}"></script>#}
+{##}
+{#    <!-- Peity -->#}
+{#    <script src="{% static "site/js/plugins/peity/jquery.peity.min.js" %}"></script>#}
+
+</body>
+
+</html>

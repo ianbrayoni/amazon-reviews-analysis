@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Product Search
+                        <small>Please select from each of the provided choice
+                            boxes.
+                        </small>
+                    </h5>
+                </div>
+
+                <div class="ibox-content">
+                    <form method="post" action="{% url 'search' %}"
+                          class="form-horizontal">
+                        {% csrf_token %}
+
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group "><label
+                                class="col-sm-2 control-label">Product</label>
+                            <div class="col-sm-10"><select
+                                    class="form-control m-b"
+                                    name="productGroup">
+                                {% for key, value in form.fields.productGroup.choices %}
+                                    <option value="{{ value }}">{{ key }}</option>
+                                {% endfor %}
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group"><label
+                                class="col-sm-2 control-label">Manufacturer</label>
+                            <div class="col-sm-10"><select
+                                    class="form-control m-b"
+                                    name="manufacturer">
+                                {% for key, value  in form.fields.manufacturer.choices %}
+                                    <option value="{{ value }}">{{ key }}</option>
+                                {% endfor %}
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group"><label
+                                class="col-sm-2 control-label">Keywords</label>
+
+                            <div class="col-sm-10"><select
+                                    class="form-control m-b" name="keywords">
+                                {% for key, value  in form.fields.keywords.choices %}
+                                    <option value="{{ value }}">{{ key }}</option>
+                                {% endfor %}
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group"><label
+                                class="col-sm-2 control-label">Condition</label>
+                            <div class="col-sm-10"><select
+                                    class="form-control m-b" name="condition">
+                                {% for key, value  in form.fields.condition.choices %}
+                                    <option value="{{ value }}">{{ key }}</option>
+                                {% endfor %}
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white" type="submit">
+                                    Cancel
+                                </button>
+                                <button class="btn btn-primary" type="submit"
+                                        value="submit">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
