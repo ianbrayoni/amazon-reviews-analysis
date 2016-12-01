@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
 from django.db.models import Count
+from django.utils.encoding import smart_str
 from .forms import ItemSearchForm, ItemLookUpForm
 from .models import Products
 from review_analysis.apps.crawler.models import Reviews
@@ -58,14 +59,13 @@ def search(request):
                 message = settings.AWS_ERROR_RESPONSE
                 return HttpResponse(message + str(e))
             else:
-                # to_unicode takes care of non-ascii characters
+                # smart_str takes care of non-ascii characters
                 inventory = []
                 for item in items:
-                    # title = to_unicode(item.ItemAttributes.Title)
-                    # item_id = to_unicode(item.ASIN)
-                    # item_tuple = (title, item_id)
-                    # inventory.append(item_tuple)
-                    inventory.append(item)
+                    title = smart_str(item.ItemAttributes.Title)
+                    item_id = smart_str(item.ASIN)
+                    item_tuple = (title, item_id)
+                    inventory.append(item_tuple)
 
             return render(request, 'results.html',
                           {'inventory': inventory})
@@ -89,17 +89,17 @@ def lookup(request):
     """
     if request.method == 'POST':
         form = ItemLookUpForm(request.POST)
-
         if form.is_valid():
             post = form.save(commit=False)
             post.asin = form.cleaned_data['asin']
+            print post.asin
             post.reviews_url = make_url(post.asin)
 
             # get product title
             try:
                 item_lookup = api.item_lookup(post.asin)
                 for item in item_lookup.Items.Item:
-                    post.product_title = item.ItemAttributes.Title
+                    post.product_title = smart_str(item.ItemAttributes.Title)
             except AWSError, e:
                 message = settings.AWS_ERROR_RESPONSE
                 return HttpResponse(message + str(e))
@@ -149,12 +149,6 @@ def make_url(asin):
     # https://www.amazon.com/product-reviews/B01H7XOSGO/
     return "https://www.amazon.com/product-reviews/" + asin + "/"
 
-
-def to_unicode(obj, encoding='utf-8'):
-    if isinstance(obj, basestring):
-        if not isinstance(obj, unicode):
-            obj = unicode(obj, encoding)
-    return obj
 
 
 

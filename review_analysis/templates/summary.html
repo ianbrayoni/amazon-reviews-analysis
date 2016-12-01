@@ -1,6 +1,73 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<h1>Item Summary</h1>
-	{{ return_dict }}
+{#    {% load static %}#}
+
+{#	<h1>Item Summary</h1>#}
+{#	{{ return_dict }}#}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Sentiment Analysis</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="flot-chart">
+                        <div class="flot-chart-pie-content" id="flot-pie-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+        $(function() {
+
+            var data = [{
+                label: "Positive",
+                data: 30,
+                color: "#ffff00",
+            }, {
+                label: "Negative",
+                data: 18,
+                color: "#000000",
+            }, {
+                label: "Advice",
+                data: 12,
+                color: "#800000",
+            }, {
+                label: "Neutral",
+                data: 5,
+                color: "#1ab394",
+            }, {
+                label: "No Sentiment",
+                data: 10,
+                color: "#ff5733",
+            }];
+
+            var plotObj = $.plot($("#flot-pie-chart"), data, {
+                series: {
+                    pie: {
+                        show: true
+                    }
+                },
+                grid: {
+                    hoverable: true
+                },
+                tooltip: true,
+                tooltipOpts: {
+                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                    shifts: {
+                        x: 20,
+                        y: 0
+                    },
+                    defaultTheme: false
+                }
+            });
+
+        });
+    </script>
 {% endblock %}
