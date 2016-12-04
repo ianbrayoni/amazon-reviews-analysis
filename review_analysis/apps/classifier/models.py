@@ -12,7 +12,14 @@ class Sentiment(models.Model):
         return str(self.sentiment)
 
 
-class LabeledData(models.Model):
+class ColorCode(models.Model):
+    color = models.TextField()
+
+    def __unicode__(self):
+        return str(self.color)
+
+
+class TrainData(models.Model):
     asin = models.TextField()
     review_text = models.TextField()
     sentiment = models.ForeignKey(Sentiment)

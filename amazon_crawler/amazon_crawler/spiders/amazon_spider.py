@@ -5,7 +5,8 @@ import cPickle
 from django.conf import settings
 from review_analysis.apps.classifier.views import extract_word_features
 from review_analysis.apps.classifier.models import Sentiment
-from review_analysis.apps.products.models import Products
+from review_analysis.apps.products.models import Product
+from review_analysis.apps.classifier.models import ColorCode
 from amazon_crawler.items import AmazonCrawlerItem # noqa
 
 
@@ -35,12 +36,17 @@ class AmazonSpiderSpider(scrapy.Spider):
         :param response:
         :return:
         """
-        product_obj = Products.objects.get(asin=self.asin)
-        if product_obj is None:
+        try:
+            Product.objects.get(asin=self.asin)
+        except Product.DoesNotExist:
             yield scrapy.Request(self.start_urls[0],
                                  callback=self.parse_reviews)
-        else:
-            pass
+
+        # if product_obj is None:
+        #     yield scrapy.Request(self.start_urls[0],
+        #                          callback=self.parse_reviews)
+        # else:
+        #     pass
 
     def parse_reviews(self, response):
         """
@@ -63,6 +69,8 @@ class AmazonSpiderSpider(scrapy.Spider):
                 )
 
                 item['sentiment'] = Sentiment.objects.get(id=sentiment)
+
+                item['color'] = ColorCode.objects.get(id=sentiment)
 
                 yield item            
 
@@ -110,3 +118,19 @@ def sentiment_reference(sentiment):
         'none': 5  # no sentiment
     }.get(sentiment, 5))
 
+#
+# def color_reference(sentiment):
+#     """
+#     This function is to reflect the normalized db structure
+#     We store integer referencing various sentiment types
+#
+#     :param sentiment: sentiment as text e.g positive
+#     :return: integer referencing sentiment text e.g 1
+#     """
+#     return int({
+#         1: 1,
+#         2: 2,
+#         3: 3,
+#         4: 4,
+#         5: 5  # no sentiment
+#     }.get(sentiment, 5))

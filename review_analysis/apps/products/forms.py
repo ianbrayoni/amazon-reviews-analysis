@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from .models import Products
+from .models import Product
 
 PRODUCT_GROUP = (
     ('', ''),
@@ -41,5 +41,5 @@ class ItemLookUpForm(forms.ModelForm):
     LookUp: asin, product_title, reviews_url
     """
     class Meta:
-        model = Products
+        model = Product
         fields = ('asin',)

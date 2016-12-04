@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{#    {% load static %}#}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content text-center p-md">
 
-{#	<h1>Item Summary</h1>#}
-{#	{{ return_dict }}#}
+                    <h2><span class="text-navy"><i>{{ return_dict.product_title }}</i></span></h2>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-lg-12">
@@ -14,7 +21,8 @@
                 </div>
                 <div class="ibox-content">
                     <div class="flot-chart">
-                        <div class="flot-chart-pie-content" id="flot-pie-chart"></div>
+                        <div class="flot-chart-pie-content"
+                             id="flot-pie-chart"></div>
                     </div>
                 </div>
             </div>
@@ -22,31 +30,18 @@
     </div>
 
 
-
     <script type="text/javascript">
-        $(function() {
+        $(function () {
+            var data = [
+                {% for sentiment in return_dict.sentiment_analysis %}
+                    {
+                        label: "{{ sentiment.sentiment__sentiment }}",
+                        data: {{ sentiment.total }},
+                        color: "{{ sentiment.color__color }}",
+                    },
+                {% endfor %}
+            ];
 
-            var data = [{
-                label: "Positive",
-                data: 30,
-                color: "#ffff00",
-            }, {
-                label: "Negative",
-                data: 18,
-                color: "#000000",
-            }, {
-                label: "Advice",
-                data: 12,
-                color: "#800000",
-            }, {
-                label: "Neutral",
-                data: 5,
-                color: "#1ab394",
-            }, {
-                label: "No Sentiment",
-                data: 10,
-                color: "#ff5733",
-            }];
 
             var plotObj = $.plot($("#flot-pie-chart"), data, {
                 series: {
@@ -56,6 +51,10 @@
                 },
                 grid: {
                     hoverable: true
+                },
+                legend: {
+{#                    show: false#}
+                    labelBoxBorderColor: "none"
                 },
                 tooltip: true,
                 tooltipOpts: {

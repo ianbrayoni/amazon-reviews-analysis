@@ -4,16 +4,14 @@ import amazonproduct
 import subprocess
 import os
 from amazonproduct.errors import AWSError
-# import cPickle
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
 from django.db.models import Count
 from django.utils.encoding import smart_str
 from .forms import ItemSearchForm, ItemLookUpForm
-from .models import Products
-from review_analysis.apps.crawler.models import Reviews
-# from review_analysis.apps.classifier.views import extract_word_features
+from .models import Product
+from review_analysis.apps.crawler.models import Review
 
 config = {
     'access_key': settings.AWS_ACCESS_KEY,
@@ -36,7 +34,7 @@ def index(request):
 
 def search(request):
     """
-    Search for products using allowed params.
+    Search for Product using allowed params.
 
     :param request:
     :return:
@@ -92,7 +90,6 @@ def lookup(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.asin = form.cleaned_data['asin']
-            print post.asin
             post.reviews_url = make_url(post.asin)
 
             # get product title
@@ -113,19 +110,20 @@ def lookup(request):
                 subprocess.call(cmd, shell=True)
 
                 # save product
-                post_obj, created = Products.objects.get_or_create(
+                post_obj, created = Product.objects.get_or_create(
                     asin=post.asin,
                     reviews_url=post.reviews_url,
                     product_title=post.product_title)
 
             # display summary from scrapped data
             if post_obj is not None:
-                reviews_summary = list(Reviews.objects.filter(asin=post.asin).
-                                       values('sentiment__sentiment').
+                reviews_summary = list(Review.objects.filter(asin=post.asin).
+                                       values('sentiment__sentiment',
+                                              'color__color').
                                        annotate(total=Count('asin')).
                                        order_by('sentiment__sentiment'))
-                total_reviews = Reviews.objects.filter(asin=post.asin).count()
-                product_title = (Products.objects.get(asin__exact=post.asin)).\
+                total_reviews = Review.objects.filter(asin=post.asin).count()
+                product_title = (Product.objects.get(asin__exact=post.asin)).\
                     product_title
                 asin = post.asin
 
