@@ -3,21 +3,21 @@
 import amazonproduct
 import subprocess
 import os
-# import cPickle
+from amazonproduct.errors import AWSError
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
 from django.db.models import Count
+from django.utils.encoding import smart_str
 from .forms import ItemSearchForm, ItemLookUpForm
-from .models import Products
-from review_analysis.apps.crawler.models import Reviews
-# from review_analysis.apps.classifier.views import extract_word_features
+from .models import Product
+from review_analysis.apps.crawler.models import Review
 
 config = {
-    'access_key': 'AKIAIISQG525FSEYBPZA',
-    'secret_key': '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',
-    'associate_tag': 'revanalytics2-20',
-    'locale': 'us'
+    'access_key': settings.AWS_ACCESS_KEY,
+    'secret_key': settings.AWS_SECRET_KEY,
+    'associate_tag': settings.AWS_ASSOCIATE_TAG,
+    'locale': settings.AWS_PREFERED_LOCALE
 }
 
 api = amazonproduct.API(cfg=config)
@@ -27,10 +27,18 @@ api = amazonproduct.API(cfg=config)
 
 
 def index(request):
-    return HttpResponse("Index Page.")
+    context = "Amazon Electronics Synthesizer.\n"
+    return render(request, 'index.html',
+                  {'context': context})
 
 
-def itemSearch(request):
+def search(request):
+    """
+    Search for Product using allowed params.
+
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         form = ItemSearchForm(request.POST)
 
@@ -41,93 +49,110 @@ def itemSearch(request):
             condition = form.cleaned_data['condition']
 
             # Search Amazon Product API
-            items = api.item_search(product_group, Manufacturer=manufacturer,
-                                    Keywords=keywords, Condition=condition)
+            try:
+                items = api.item_search(product_group,
+                                        Manufacturer=manufacturer,
+                                        Keywords=keywords, Condition=condition)
+            except AWSError, e:
+                message = settings.AWS_ERROR_RESPONSE
+                return HttpResponse(message + str(e))
+            else:
+                # smart_str takes care of non-ascii characters
+                inventory = []
+                for item in items:
+                    title = smart_str(item.ItemAttributes.Title)
+                    item_id = smart_str(item.ASIN)
+                    item_tuple = (title, item_id)
+                    inventory.append(item_tuple)
 
-            # to_unicode takes care of non-ascii characters
-            inventory = []
-            for item in items:
-                title = to_unicode(item.ItemAttributes.Title)
-                item_id = to_unicode(item.ASIN)
-                item_tuple = (title, item_id)
-                inventory.append(item_tuple)
-
-            return render(request, 'products/itemResults.html',
+            return render(request, 'results.html',
                           {'inventory': inventory})
 
     else:
         form = ItemSearchForm()
 
-    return render(request, 'products/itemSearch.html', {'form': form})
+    return render(request, 'search.html', {'form': form})
 
 
-def results(request):
-    return HttpResponse("Results Page.")
+# def results(request):
+#     return HttpResponse("Results Page.")
 
 
-def itemLookUp(request):
+def lookup(request):
+    """
+    Look up asin to retrieve reviews
+
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         form = ItemLookUpForm(request.POST)
-
         if form.is_valid():
             post = form.save(commit=False)
             post.asin = form.cleaned_data['asin']
             post.reviews_url = make_url(post.asin)
 
             # get product title
-            item_lookup = api.item_lookup(post.asin)
-            for item in item_lookup.Items.Item:
-                post.product_title = item.ItemAttributes.Title
+            try:
+                item_lookup = api.item_lookup(post.asin)
+                for item in item_lookup.Items.Item:
+                    post.product_title = smart_str(item.ItemAttributes.Title)
+            except AWSError, e:
+                message = settings.AWS_ERROR_RESPONSE
+                return HttpResponse(message + str(e))
+            else:
+                # find crawler cfg
+                os.chdir(settings.SCRAPY_APP_DIR)
+                # scrapy crawl amazon_spider -a
+                # start_url="https://www.amazon.com/product-reviews/B01FFQEMVQ/"
+                cmd = 'scrapy crawl amazon_spider -a start_url="%s"' \
+                      % post.reviews_url
+                subprocess.call(cmd, shell=True)
 
-            # find crawler cfg
-            os.chdir(settings.SCRAPY_APP_DIR)
-            # scrapy crawl amazon_spider -a
-            # start_url="https://www.amazon.com/product-reviews/B01FFQEMVQ/"
-            cmd = 'scrapy crawl amazon_spider -a start_url="%s"' \
-                  % post.reviews_url
-            subprocess.call(cmd, shell=True)
-
-            # TODO : save item ; B01H7XOSGO - what if they have no reviews?
-            # TODO : what if item already saved
-            post.save()
+                # save product
+                post_obj, created = Product.objects.get_or_create(
+                    asin=post.asin,
+                    reviews_url=post.reviews_url,
+                    product_title=post.product_title)
 
             # display summary from scrapped data
-            reviews_summary = list(Reviews.objects.filter(asin=post.asin).
-                                   values('sentiment__sentiment').
-                                   annotate(total=Count('asin')).
-                                   order_by('sentiment__sentiment'))
-            total_reviews = Reviews.objects.filter(asin=post.asin).count()
-            product_title = (Products.objects.get(asin__exact=post.asin)).\
-                product_title
-            asin = post.asin
+            if post_obj is not None:
+                reviews_summary = list(Review.objects.filter(asin=post.asin).
+                                       values('sentiment__sentiment',
+                                              'color__color').
+                                       annotate(total=Count('asin')).
+                                       order_by('sentiment__sentiment'))
+                total_reviews = Review.objects.filter(asin=post.asin).count()
+                product_title = (Product.objects.get(asin__exact=post.asin)).\
+                    product_title
+                product_url = (Product.objects.get(asin__exact=post.asin)).\
+                    reviews_url
+                asin = post.asin
+                reviews = list(Review.objects.filter(asin=post.asin).
+                               values('review_text','sentiment__sentiment'))
 
-            return_dict = {
-                'asin': asin,
-                'product_title': product_title,
-                'total_reviews_extracted': total_reviews,
-                'sentiment_analysis': reviews_summary
-            }
+                return_dict = {
+                    'asin': asin,
+                    'product_title': product_title,
+                    'total_reviews_extracted': total_reviews,
+                    'product_url': product_url,
+                    'sentiment_analysis': reviews_summary,
+                    'all_reviews_list': reviews
+                }
 
-        # return HttpResponse("Finished processing: " + post.reviews_url)
-        return render(request, 'products/itemSummary.html',
-                      {'return_dict': return_dict})
+                return render(request, 'summary.html',
+                              {'return_dict': return_dict})
 
     else:
         form = ItemLookUpForm()
 
-    return render(request, 'products/itemLookUp.html', {'form': form})
+    return render(request, 'lookup.html', {'form': form})
 
 
 def make_url(asin):
-    # https://www.amazon.com/product-reviews/B01FFQEMVQ/
+    # https://www.amazon.com/product-reviews/B01H7XOSGO/
     return "https://www.amazon.com/product-reviews/" + asin + "/"
 
-
-def to_unicode(obj, encoding='utf-8'):
-    if isinstance(obj, basestring):
-        if not isinstance(obj, unicode):
-            obj = unicode(obj, encoding)
-    return obj
 
 
 

@@ -64,8 +64,8 @@ ROOT_URLCONF = 'review_analysis.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -133,9 +133,26 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, 'static'))
+# STATIC_ROOT = ''
 STATIC_URL = '/static/'
+
 
 # Classifier loaded to file to avoid retraining
 CLASSIFIER_OBJECT = os.path.join(PROJECT_DIR, "naivebayes.pickle")
 
+# AWS API Params
+AWS_ACCESS_KEY = 'AKIAIISQG525FSEYBPZA'
+AWS_SECRET_KEY = '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'
+AWS_ASSOCIATE_TAG = 'revanalytics2-20'
+AWS_PREFERED_LOCALE = 'us'
+
+#
+AWS_ERROR_RESPONSE = 'Oops! Sorry an error occurred when ' \
+                     'accessing the Amazon Product API...'
+
+# admin/review_analysis

@@ -6,8 +6,8 @@
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 from scrapy_djangoitem import DjangoItem
-from review_analysis.apps.crawler.models import Reviews
+from review_analysis.apps.crawler.models import Review
 
 
 class AmazonCrawlerItem(DjangoItem):
-    django_model = Reviews
+    django_model = Review

@@ -5,7 +5,7 @@ import nltk
 # import cPickle
 # from django.db import connection
 # from django.conf import settings
-from .models import LabeledData
+from .models import TrainData
 
 
 def pre_process_manually_trained_data():
@@ -20,12 +20,12 @@ def pre_process_manually_trained_data():
     #                "inner join classifier_sentiment t1 "
     #                "on t2.sentiment_id = t1.id")
     # labeled_data = cursor.fetchall()
-    labeled_data = list(
-        LabeledData.objects.values('sentiment__sentiment', 'review_text'))
+    train_data = list(
+        TrainData.objects.values('sentiment__sentiment', 'review_text'))
 
     pre_processed_data = []
 
-    for data in labeled_data:
+    for data in train_data:
         words = data.get('review_text')
         sentiment = data.get('sentiment__sentiment')
         pre_processed_data.append((words, sentiment))

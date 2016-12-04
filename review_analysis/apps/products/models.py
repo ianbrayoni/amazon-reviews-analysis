@@ -7,7 +7,7 @@ from django.db import models
 
 # Create your models here.
 
-class Products(models.Model):
+class Product(models.Model):
     asin = models.TextField(max_length=10)
     reviews_url = models.TextField()
     product_title = models.TextField()

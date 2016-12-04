@@ -9,7 +9,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=reviews_analysis
     ports:
-      - 5444:5432
+      - 37821:5432
 
   web_app:
     build: .
@@ -22,7 +22,7 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=review_analysis.settings.docker_settings
     ports:
-      - 80:3000
+      - 8080:3000
 
 
 
