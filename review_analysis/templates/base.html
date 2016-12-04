@@ -23,8 +23,6 @@
 
     <!--[if lte IE 8]><script type="text/javascript" language="javascript" src="{% static 'site/js/excanvas.min.js' %}"></script><![endif]-->
 
-    <script type="text/javascript" src="{% static 'site/js/jquery-2.1.1.js' %}"></script>
-
 </head>
 
 <body class="top-navigation">
@@ -37,7 +35,7 @@
                 <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
                     <i class="fa fa-reorder"></i>
                 </button>
-                <a href="{% url 'index' %}" class="navbar-brand">Amazon Synthesizer</a>
+                <a href="{% url 'index' %}" class="navbar-brand">Amazon Electronics Synthesizer</a>
             </div>
             <div class="navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">
@@ -57,7 +55,7 @@
         </div>
         <div class="footer">
             <div>
-                <strong>Copyright</strong> Example Company &copy; 2014-2015
+                <strong>Copyright</strong> Amazon Electronics Synthesizer &copy; 2015-2016
             </div>
         </div>
 
@@ -65,15 +63,13 @@
     </div>
 
     <!-- Mainly scripts -->
-{#    <script src="{% static 'site/js/jquery-2.1.1.js' %}"></script>#}
-{#    <script src="{% static 'site/js/bootstrap.min.js' %}"></script>#}
-{#    <script src="{% static "site/js/plugins/metisMenu/jquery.metisMenu.js" %}"></script>#}
-{#    <script src="{% static "site/js/plugins/slimscroll/jquery.slimscroll.min.js" %}"></script>#}
-{##}
-{#    <!-- Custom and plugin javascript -->#}
-{#    <script src="{% static "site/js/inspinia.js" %}"></script>#}
-{#    <script src="{% static "site/js/plugins/pace/pace.min.js" %}"></script>#}
-{##}
+    <script type="text/javascript" src="{% static 'site/js/jquery-2.1.1.js' %}"></script>
+    <script src="{% static 'site/js/bootstrap.min.js' %}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{% static "site/js/inspinia.js" %}"></script>
+    <script src="{% static "site/js/plugins/pace/pace.min.js" %}"></script>
+
     <!-- Flot -->
     <script src="{% static 'site/js/plugins/flot/jquery.flot.js' %}"></script>
     <script src="{% static 'site/js/plugins/flot/jquery.flot.tooltip.min.js' %}"></script>
@@ -87,15 +83,6 @@
     <script src="{% static 'site/js/plugins/dataTables/dataTables.bootstrap.js' %}"></script>
     <script src="{% static 'site/js/plugins/dataTables/dataTables.responsive.js' %}"></script>
     <script src="{% static 'site/js/plugins/dataTables/dataTables.tableTools.min.js' %}"></script>
-
-
-{#    <script src="{% static 'site/js/demo/flot-demo.js' %}"></script>#}
-
-{#    <!-- ChartJS-->#}
-{#    <script src="{% static "site/js/plugins/chartJs/Chart.min.js" %}"></script>#}
-{##}
-{#    <!-- Peity -->#}
-{#    <script src="{% static "site/js/plugins/peity/jquery.peity.min.js" %}"></script>#}
 
 </body>
 
