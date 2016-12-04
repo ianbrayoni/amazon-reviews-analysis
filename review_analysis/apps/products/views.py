@@ -27,7 +27,7 @@ api = amazonproduct.API(cfg=config)
 
 
 def index(request):
-    context = "Amazon Synthesizer.\n"
+    context = "Amazon Electronics Synthesizer.\n"
     return render(request, 'index.html',
                   {'context': context})
 
@@ -125,13 +125,19 @@ def lookup(request):
                 total_reviews = Review.objects.filter(asin=post.asin).count()
                 product_title = (Product.objects.get(asin__exact=post.asin)).\
                     product_title
+                product_url = (Product.objects.get(asin__exact=post.asin)).\
+                    reviews_url
                 asin = post.asin
+                reviews = list(Review.objects.filter(asin=post.asin).
+                               values('review_text','sentiment__sentiment'))
 
                 return_dict = {
                     'asin': asin,
                     'product_title': product_title,
                     'total_reviews_extracted': total_reviews,
-                    'sentiment_analysis': reviews_summary
+                    'product_url': product_url,
+                    'sentiment_analysis': reviews_summary,
+                    'all_reviews_list': reviews
                 }
 
                 return render(request, 'summary.html',

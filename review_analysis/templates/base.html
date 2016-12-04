@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>Amazon Synthesizer</title>
+    <title>Amazon Electronics Synthesizer</title>
 
     {% load static %}
 
@@ -15,6 +15,11 @@
     <link href="{% static "site/font-awesome/css/font-awesome.css" %}" rel="stylesheet">
     <link href="{% static "site/css/animate.css" %}" rel="stylesheet">
     <link href="{% static "site/css/style.css" %}" rel="stylesheet">
+
+    <link href="{% static 'site/css/plugins/dataTables/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'site/css/plugins/dataTables/dataTables.responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'site/css/plugins/dataTables/dataTables.tableTools.min.css' %}" rel="stylesheet">
+
 
     <!--[if lte IE 8]><script type="text/javascript" language="javascript" src="{% static 'site/js/excanvas.min.js' %}"></script><![endif]-->
 
@@ -76,6 +81,13 @@
     <script src="{% static 'site/js/plugins/flot/jquery.flot.resize.js' %}"></script>
     <script src="{% static 'site/js/plugins/flot/jquery.flot.pie.js' %}"></script>
     <script src="{% static 'site/js/plugins/flot/jquery.flot.time.js' %}"></script>
+
+    <!-- Data Tables -->
+    <script src="{% static 'site/js/plugins/dataTables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'site/js/plugins/dataTables/dataTables.bootstrap.js' %}"></script>
+    <script src="{% static 'site/js/plugins/dataTables/dataTables.responsive.js' %}"></script>
+    <script src="{% static 'site/js/plugins/dataTables/dataTables.tableTools.min.js' %}"></script>
+
 
 {#    <script src="{% static 'site/js/demo/flot-demo.js' %}"></script>#}
 
