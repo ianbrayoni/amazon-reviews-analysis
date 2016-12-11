@@ -54,8 +54,12 @@ def search(request):
                                         Manufacturer=manufacturer,
                                         Keywords=keywords, Condition=condition)
             except AWSError, e:
-                message = settings.AWS_ERROR_RESPONSE
-                return HttpResponse(message + str(e))
+                context = {
+                    "error_code": e.code,
+                    "error_msg": e.msg
+                }
+                return render(request, 'error.html',
+                              {'context': context})
             else:
                 # smart_str takes care of non-ascii characters
                 inventory = []
@@ -98,8 +102,12 @@ def lookup(request):
                 for item in item_lookup.Items.Item:
                     post.product_title = smart_str(item.ItemAttributes.Title)
             except AWSError, e:
-                message = settings.AWS_ERROR_RESPONSE
-                return HttpResponse(message + str(e))
+                context = {
+                    "error_code": e.code,
+                    "error_msg": e.msg
+                }
+                return render(request, 'error.html',
+                              {'context': context})
             else:
                 # find crawler cfg
                 os.chdir(settings.SCRAPY_APP_DIR)

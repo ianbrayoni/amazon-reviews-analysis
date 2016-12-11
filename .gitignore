@@ -40,9 +40,10 @@ ehthumbs.db
 Thumbs.db
 
 # dirs #
-######## 
+########
 migrations/*
 .idea/*
 train_data/*
 .vagrant/*
 review_analysis/static/
+reviews-env/

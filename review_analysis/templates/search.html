@@ -19,50 +19,68 @@
                         {% csrf_token %}
 
                         <div class="hr-line-dashed"></div>
-                        <div class="form-group "><label
-                                class="col-sm-2 control-label">Product</label>
-                            <div class="col-sm-10"><select
-                                    class="form-control m-b"
-                                    name="productGroup">
-                                {% for key, value in form.fields.productGroup.choices %}
-                                    <option value="{{ value }}">{{ key }}</option>
-                                {% endfor %}
-                            </select>
+                        <div class="form-group {% if form.productGroup.errors %}has-error{% endif %}">
+                            <label class="col-sm-2 control-label">Product</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="{{ form.productGroup.name }}" value="{{ form.productGroup.value }}">
+                                    {% for key, value in form.fields.productGroup.choices %}
+                                        <option value="{{ value }}">{{ key }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div {% if form.productGroup.errors %} class="alert alert-danger" {% endif %}>
+                                    {% for error in form.productGroup.errors %}
+                                    <strong>{{ error|escape }}</strong>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group"><label
-                                class="col-sm-2 control-label">Manufacturer</label>
-                            <div class="col-sm-10"><select
-                                    class="form-control m-b"
-                                    name="manufacturer">
-                                {% for key, value  in form.fields.manufacturer.choices %}
-                                    <option value="{{ value }}">{{ key }}</option>
-                                {% endfor %}
-                            </select>
+                        <div class="form-group {% if form.manufacturer.errors %}has-error{% endif %}">
+                            <label class="col-sm-2 control-label">Manufacturer</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="{{ form.manufacturer.name }}" value="{{ form.manufacturer.value }}"">
+                                    {% for key, value  in form.fields.manufacturer.choices %}
+                                        <option value="{{ value }}">{{ key }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div {% if form.manufacturer.errors %} class="alert alert-danger" {% endif %}>
+                                    {% for error in form.manufacturer.errors %}
+                                    <strong>{{ error|escape }}</strong>
+                                    {% endfor %}
+                                </div>
+
                             </div>
                         </div>
 
-                        <div class="form-group"><label
-                                class="col-sm-2 control-label">Keywords</label>
-
-                            <div class="col-sm-10"><select
-                                    class="form-control m-b" name="keywords">
-                                {% for key, value  in form.fields.keywords.choices %}
-                                    <option value="{{ value }}">{{ key }}</option>
-                                {% endfor %}
-                            </select>
+                        <div class="form-group {% if form.keywords.errors %}has-error{% endif %}">
+                            <label class="col-sm-2 control-label">Keywords</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="{{ form.keywords.name }}" value="{{ form.keywords.value }}">
+                                    {% for key, value  in form.fields.keywords.choices %}
+                                        <option value="{{ value }}">{{ key }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div {% if form.keywords.errors %} class="alert alert-danger" {% endif %}>
+                                    {% for error in form.keywords.errors %}
+                                    <strong>{{ error|escape }}</strong>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group"><label
-                                class="col-sm-2 control-label">Condition</label>
-                            <div class="col-sm-10"><select
-                                    class="form-control m-b" name="condition">
-                                {% for key, value  in form.fields.condition.choices %}
-                                    <option value="{{ value }}">{{ key }}</option>
-                                {% endfor %}
-                            </select>
+                        <div class="form-group {% if form.condition.errors %}has-error{% endif %}">
+                            <label class="col-sm-2 control-label">Condition</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="{{ form.condition.name }}" value="{{ form.condition.value }}">
+                                    {% for key, value  in form.fields.condition.choices %}
+                                        <option value="{{ value }}">{{ key }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div {% if form.condition.errors %} class="alert alert-danger" {% endif %}>
+                                    {% for error in form.condition.errors %}
+                                    <strong>{{ error|escape }}</strong>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
 
@@ -70,7 +88,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
-                                <button class="btn btn-white" type="submit">
+                                <button class="btn btn-white" type="reset">
                                     Cancel
                                 </button>
                                 <button class="btn btn-primary" type="submit"
@@ -80,6 +98,7 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
