@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="ibox-content">
-                    <form method="post" action="{% url 'search' %}"
+                    <form id="search" method="post" action="{% url 'search' %}"
                           class="form-horizontal">
                         {% csrf_token %}
 
@@ -92,7 +92,7 @@
                                     Cancel
                                 </button>
                                 <button class="btn btn-primary" type="submit"
-                                        value="submit">
+                                        value="submit" onclick="loading()">
                                     Submit
                                 </button>
                             </div>
@@ -103,7 +103,6 @@
             </div>
         </div>
     </div>
-
 
 {% endblock %}
 

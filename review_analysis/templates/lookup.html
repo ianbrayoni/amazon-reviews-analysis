@@ -1,12 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{#	<h1>Item LookUp</h1>#}
-{#	<form action="/lookup/" method="post">#}
-{#		{% csrf_token %}#}
-{#		{{ form }}#}
-{#		<input type="submit" value="Submit">#}
-{#	</form>#}
 
     <div class="row">
         <div class="col-lg-12">
@@ -29,7 +23,7 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="{{ form.asin.name }}">
                                         <span class="input-group-btn">
-                                            <button type="submit" value="submit" class="btn btn-primary">Go!</button>
+                                            <button type="submit" value="submit" class="btn btn-primary" onclick="loading()">Go!</button>
                                         </span>
                                     </div>
                                     <div {% if form.asin.errors %} class="alert alert-danger" {% endif %}>

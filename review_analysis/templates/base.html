@@ -26,6 +26,7 @@
 
 </head>
 
+
 <body class="top-navigation">
 
     <div id="wrapper">
@@ -62,7 +63,6 @@
 
         </div>
     </div>
-
     <!-- Mainly scripts -->
     <script src="{% static 'site/js/bootstrap.min.js' %}"></script>
 
@@ -80,6 +80,20 @@
     <script src="{% static 'site/js/plugins/dataTables/dataTables.responsive.js' %}"></script>
     <script src="{% static 'site/js/plugins/dataTables/dataTables.tableTools.min.js' %}"></script>
 
+    <!-- Overlay -->
+    <script src="{% static 'site/js/plugins/overlay/loadingoverlay.js' %}"></script>
+    <script src="{% static 'site/js/plugins/overlay/loadingoverlay.min.js' %}"></script>
+
+    <script>
+        function loading(){
+            $.LoadingOverlay("show", {
+                    image: "",
+                    fontawesome: "fa fa-spinner fa-spin"
+                });
+        }
+    </script>
+
 </body>
+
 
 </html>
