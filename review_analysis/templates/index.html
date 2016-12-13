@@ -7,16 +7,80 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content text-center p-md">
 
-                    <h1><span class="text-navy"><i>{{ context }}</i></span></h1>
+                    <h1><span class="text-navy"><i>Amazon Electronics Synthesizer</i></span>
+                    </h1>
 
                     <p>
-                       <h2> A web application for Sentiment Analysis using Supervised Machine Learning.</h2>
+                    <h2> A web application for Sentiment Analysis using
+                        Supervised Machine Learning.</h2>
                     </p>
-
 
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Analysed Items</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown"
+                           href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#">Config option 1</a>
+                            </li>
+                            <li><a href="#">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Product ID (ASIN)</th>
+                            <th>Total Reviews Extracted</th>
+                            <th>Link</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in all_items %}
+                        <tr class="gradeU">
+                            <td><i>{{ item.title }}</i></td>
+                            <td>{{ item.asin }}</td>
+                            <td class="center">{{ item.total_reviews }}</td>
+                            <td><a href="{% url 'profile' %}?asin={{ item.asin }}"><i class="fa fa-external-link text-navy"></i></a>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Title</th>
+                            <th>Product ID (ASIN)</th>
+                            <th>Total Reviews</th>
+                            <th>Link</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}

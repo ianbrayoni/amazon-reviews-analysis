@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import HStoreField
 
 # Create your models here.
 
@@ -26,4 +28,15 @@ class TrainData(models.Model):
 
     def __unicode__(self):
         return str(self.asin)
+
+
+class Analysed(models.Model):
+    asin = models.TextField()
+    title = models.TextField()
+    sentiment_distribution = ArrayField(HStoreField())
+    total_reviews = models.IntegerField()
+
+    def __unicode__(self):
+        return str(self.asin)
+
 

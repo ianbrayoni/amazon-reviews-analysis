@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'review_analysis.apps.crawler',
     'review_analysis.apps.products',
     'review_analysis.apps.classifier',
+    'django.contrib.postgres'
 ]
 
 MIDDLEWARE = [

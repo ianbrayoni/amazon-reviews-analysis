@@ -3,15 +3,16 @@
 import amazonproduct
 import subprocess
 import os
+from django.http import HttpResponse
 from amazonproduct.errors import AWSError
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.conf import settings
 from django.db.models import Count
+from django.conf import settings
 from django.utils.encoding import smart_str
 from .forms import ItemSearchForm, ItemLookUpForm
 from .models import Product
 from review_analysis.apps.crawler.models import Review
+from review_analysis.apps.classifier.models import Analysed
 
 config = {
     'access_key': settings.AWS_ACCESS_KEY,
@@ -25,11 +26,11 @@ api = amazonproduct.API(cfg=config)
 
 # Create your views here.
 
-
 def index(request):
-    context = "Amazon Electronics Synthesizer.\n"
+    all_items = Analysed.objects.values().order_by('total_reviews')
+
     return render(request, 'index.html',
-                  {'context': context})
+                  {'all_items': all_items})
 
 
 def search(request):
@@ -139,6 +140,14 @@ def lookup(request):
                 reviews = list(Review.objects.filter(asin=post.asin).
                                values('review_text','sentiment__sentiment'))
 
+                # Save sentiment analysis summary
+                analysed_obj, saved = Analysed.objects.get_or_create(
+                    asin=post.asin,
+                    title=product_title,
+                    sentiment_distribution=reviews_summary,
+                    total_reviews=total_reviews
+                )
+
                 return_dict = {
                     'asin': asin,
                     'product_title': product_title,
@@ -155,6 +164,37 @@ def lookup(request):
         form = ItemLookUpForm()
 
     return render(request, 'lookup.html', {'form': form})
+
+
+def profile(request):
+    if request.method == 'GET':
+        asin = request.GET.get('asin')
+
+        reviews_summary = list(Review.objects.filter(asin=asin).
+                               values('sentiment__sentiment',
+                                      'color__color').
+                               annotate(total=Count('asin')).
+                               order_by('sentiment__sentiment'))
+        total_reviews = Review.objects.filter(asin=asin).count()
+        product_title = (Product.objects.get(asin__exact=asin)). \
+            product_title
+        product_url = (Product.objects.get(asin__exact=asin)). \
+            reviews_url
+        asin = asin
+        reviews = list(Review.objects.filter(asin=asin).
+                       values('review_text', 'sentiment__sentiment'))
+
+        return_dict = {
+            'asin': asin,
+            'product_title': product_title,
+            'total_reviews_extracted': total_reviews,
+            'product_url': product_url,
+            'sentiment_analysis': reviews_summary,
+            'all_reviews_list': reviews
+        }
+
+        return render(request, 'summary.html',
+                      {'return_dict': return_dict})
 
 
 def make_url(asin):
