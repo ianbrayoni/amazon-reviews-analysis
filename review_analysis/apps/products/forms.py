@@ -4,7 +4,7 @@ from django import forms
 from .models import Product
 
 PRODUCT_GROUP = (
-    ('', ''),
+    # ('', ''),
     ('Electronics', 'Electronics'),
 )
 
@@ -25,6 +25,7 @@ KEYWORDS = (
 CONDITION = (
     ('', ''),
     ('New', 'New'),
+    ('Refurbished', 'Refurbished'),
 )
 
 
