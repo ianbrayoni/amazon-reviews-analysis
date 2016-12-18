@@ -2,10 +2,9 @@
 # from django.shortcuts import render
 
 import nltk
-# import cPickle
-# from django.db import connection
-# from django.conf import settings
-from .models import TrainData
+import cPickle
+from django.conf import settings
+from .models import TrainData, AlgorithmInfo
 
 
 def pre_process_manually_trained_data():
@@ -14,12 +13,7 @@ def pre_process_manually_trained_data():
     and create a list of tuples(words, sentiment)
     :return: list of tuples(words, sentiment)
     """
-    # cursor = connection.cursor()
-    # cursor.execute("select t2.review_text, t1.sentiment "
-    #                "from classifier_labeleddata t2 "
-    #                "inner join classifier_sentiment t1 "
-    #                "on t2.sentiment_id = t1.id")
-    # labeled_data = cursor.fetchall()
+
     train_data = list(
         TrainData.objects.values('sentiment__sentiment', 'review_text'))
 
@@ -43,6 +37,10 @@ def pre_process_manually_trained_data():
         processed_data.append((words_filtered, sentiment))
 
     return processed_data
+
+# dirty hack! labeled data is around 4488 records
+labeled_training_set = pre_process_manually_trained_data()[:3800]
+labeled_testing_set = pre_process_manually_trained_data()[3800:]
 
 
 def get_all_words_from_reviews(reviews):
@@ -177,12 +175,29 @@ def extract_word_features(document):
 #   'positive'),
 #   ...]
 
-training_set = nltk.classify.apply_features(
-    extract_word_features, pre_process_manually_trained_data())
+# training_set = nltk.classify.apply_features(
+#     extract_word_features, labeled_training_set)
+#
+# testing_set = nltk.classify.apply_features(extract_word_features,
+#                                            labeled_testing_set)
 
+
+def find_accuracy(nb_classifier, test_set):
+    """
+
+    :param nb_classifier:
+    :param test_set:
+    :return:
+    """
+    accuracy = (nltk.classify.accuracy(nb_classifier, test_set)) * 100
+    naive_bayes_record = AlgorithmInfo.objects.get(algorithm='Naive Bayes')
+    naive_bayes_record.accuracy = accuracy
+    naive_bayes_record.save()
 
 # train our classifier.
 # classifier = nltk.NaiveBayesClassifier.train(training_set)
+
+# find_accuracy(classifier, testing_set)
 
 # save classifier object to avoid retraining
 # save_classifier = open(settings.CLASSIFIER_OBJECT, "wb")

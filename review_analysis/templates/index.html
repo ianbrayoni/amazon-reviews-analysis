@@ -20,30 +20,45 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="ibox-content m-b-sm border-bottom">
+                <div class="p-xs">
+                    <div class="pull-left m-r-md">
+                        <i class="fa fa-cogs text-navy mid-icon"></i>
+                    </div>
+                    {% for info in context.algorithm_info %}
+                    <h2>{{ info.algorithm }} Algorithm</h2>
+                    {% endfor %}
+                    <span>Sentiment analysis of reviews using Python and the natural language toolkit NLTK.</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+             <div class="ibox-content m-b-sm border-bottom">
+                <div class="p-xs">
+                    <div class="pull-left m-r-md">
+                        <i class="fa fa-tachometer text-navy mid-icon"></i>
+                    </div>
+                    {% for info in context.algorithm_info %}
+                    <h2> {{ info.accuracy }}% Accuracy Rating</h2>
+                    {% endfor %}
+                    <span>Accuracy computed based on a supplied test-set using the natural language toolkit NLTK.</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Analysed Items</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown"
-                           href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#">Config option 1</a>
-                            </li>
-                            <li><a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
+
                 </div>
                 <div class="ibox-content">
 
@@ -53,11 +68,11 @@
                             <th>Title</th>
                             <th>Product ID (ASIN)</th>
                             <th>Total Reviews Extracted</th>
-                            <th>Link</th>
+                            <th>Profile</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for item in all_items %}
+                        {% for item in context.all_items %}
                         <tr class="gradeU">
                             <td><i>{{ item.title }}</i></td>
                             <td>{{ item.asin }}</td>
@@ -72,7 +87,7 @@
                             <th>Title</th>
                             <th>Product ID (ASIN)</th>
                             <th>Total Reviews</th>
-                            <th>Link</th>
+                            <th>Profile</th>
                         </tr>
                         </tfoot>
                     </table>

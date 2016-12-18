@@ -12,7 +12,7 @@ from django.utils.encoding import smart_str
 from .forms import ItemSearchForm, ItemLookUpForm
 from .models import Product
 from review_analysis.apps.crawler.models import Review
-from review_analysis.apps.classifier.models import Analysed
+from review_analysis.apps.classifier.models import Analysed, AlgorithmInfo
 
 config = {
     'access_key': settings.AWS_ACCESS_KEY,
@@ -27,10 +27,16 @@ api = amazonproduct.API(cfg=config)
 # Create your views here.
 
 def index(request):
+    algorithm_info = AlgorithmInfo.objects.values()
     all_items = Analysed.objects.values().order_by('total_reviews')
 
+    context = {
+        'algorithm_info' : algorithm_info,
+        'all_items' : all_items
+    }
+
     return render(request, 'index.html',
-                  {'all_items': all_items})
+                  {'context': context})
 
 
 def search(request):

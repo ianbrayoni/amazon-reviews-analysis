@@ -47,3 +47,6 @@ train_data/*
 .vagrant/*
 review_analysis/static/
 reviews-env/
+review_analysis/apps/classifier/migrations/*
+review_analysis/apps/crawler/migrations/*
+review_analysis/apps/products/migrations/*

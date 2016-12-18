@@ -35,8 +35,17 @@ class Analysed(models.Model):
     title = models.TextField()
     sentiment_distribution = ArrayField(HStoreField())
     total_reviews = models.IntegerField()
+    date_created = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return str(self.asin)
+
+
+class AlgorithmInfo(models.Model):
+    algorithm = models.TextField()
+    accuracy = models.IntegerField()
+
+    def __unicode__(self):
+        return str(self.algorithm)
 
 
