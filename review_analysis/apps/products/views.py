@@ -27,12 +27,17 @@ api = amazonproduct.API(cfg=config)
 # Create your views here.
 
 def index(request):
+    """
+    Function to supply data to the home page
+    :param request:
+    :return:
+    """
     algorithm_info = AlgorithmInfo.objects.values()
     all_items = Analysed.objects.values().order_by('total_reviews')
 
     context = {
-        'algorithm_info' : algorithm_info,
-        'all_items' : all_items
+        'algorithm_info': algorithm_info,
+        'all_items': all_items
     }
 
     return render(request, 'index.html',
@@ -83,10 +88,6 @@ def search(request):
         form = ItemSearchForm()
 
     return render(request, 'search.html', {'form': form})
-
-
-# def results(request):
-#     return HttpResponse("Results Page.")
 
 
 def lookup(request):

@@ -42,12 +42,6 @@ class AmazonSpiderSpider(scrapy.Spider):
             yield scrapy.Request(self.start_urls[0],
                                  callback=self.parse_reviews)
 
-        # if product_obj is None:
-        #     yield scrapy.Request(self.start_urls[0],
-        #                          callback=self.parse_reviews)
-        # else:
-        #     pass
-
     def parse_reviews(self, response):
         """
         Retrieve reviews and create `item` object to save in db
