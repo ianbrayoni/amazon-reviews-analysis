@@ -105,7 +105,7 @@ def setup_django_env():
     sys.path.append('/opt/app/')
 
     os.environ['DJANGO_SETTINGS_MODULE'] = \
-        'review_analysis.settings.docker_settings'
+        'review_analysis.settings.production'
 
     django.setup()
 
