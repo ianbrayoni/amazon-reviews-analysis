@@ -6,6 +6,7 @@
 *.exe
 *.o
 *.so
+*.pyc
 
 # Packages #
 ############
@@ -25,6 +26,8 @@
 *.log
 *.sql
 *.sqlite
+*.csv
+*.json
 
 # OS generated files #
 ######################
@@ -37,5 +40,14 @@ ehthumbs.db
 Thumbs.db
 
 # dirs #
-#######
-.idea/* 
+########
+migrations/*
+.idea/*
+train_data/*
+.vagrant/*
+review_analysis/static/
+reviews-env/
+review_analysis/apps/classifier/migrations/*
+review_analysis/apps/crawler/migrations/*
+review_analysis/apps/products/migrations/*
+

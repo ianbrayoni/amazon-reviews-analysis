@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% load static %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content text-center p-md">
+
+                    <h2><a href="{{ return_dict.product_url }}"
+                           class="text-navy"><i>{{ return_dict.product_title }}</i></a>
+                    </h2>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Sentiment Analysis Breakdown
+                        <small>Click title above to view product on
+                            amazon.com
+                        </small>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="flot-chart">
+                        <div class="flot-chart-pie-content"
+                             id="flot-pie-chart"></div>
+                    </div>
+                    <dl class="dl-horizontal">
+
+                        <dt>asin:</dt>
+                        <dd>{{ return_dict.asin }}</dd>
+                        <dt>total reviews extracted:</dt>
+                        <dd> {{ return_dict.total_reviews_extracted }}</dd>
+                        {% for sentiment in return_dict.sentiment_analysis %}
+                            <dt>{{ sentiment.sentiment__sentiment }} reviews:
+                            </dt>
+                            <dd>{{ sentiment.total }}</dd>
+                        {% endfor %}
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Extracted reviews and respective sentiments</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>Review</th>
+                            <th>Sentiment</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for review_record in return_dict.all_reviews_list %}
+                            <tr class="gradeC">
+                                <td>{{ review_record.review_text}}</td>
+                                <td>{{ review_record.sentiment__sentiment }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Review</th>
+                            <th>Sentiment</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(function () {
+            var data = [
+                {% for sentiment in return_dict.sentiment_analysis %}
+                    {
+                        label: "{{ sentiment.sentiment__sentiment }}",
+                        data: {{ sentiment.total }},
+                        color: "{{ sentiment.color__color }}",
+                    },
+                {% endfor %}
+            ];
+
+
+            var plotObj = $.plot($("#flot-pie-chart"), data, {
+                series: {
+                    pie: {
+                        show: true
+                    }
+                },
+                grid: {
+                    hoverable: true
+                },
+                legend: {
+                    labelBoxBorderColor: "none"
+                },
+                tooltip: true,
+                tooltipOpts: {
+                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                    shifts: {
+                        x: 20,
+                        y: 0
+                    },
+                    defaultTheme: false
+                }
+            });
+
+        });
+
+    </script>
+
+
+
+{% endblock %}

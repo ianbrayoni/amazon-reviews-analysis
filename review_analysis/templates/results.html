@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Product Title and ASINs <small> Please select ASIN and proceed to <a href="{% url 'lookup' %}"><b>lookup product</b></a></small></h5>
+        </div>
+        <div class="ibox-content">
+
+            <div class="project-list">
+                <table class="table table-hover">
+                    <tbody>
+                    {% for item in inventory %}
+                        <tr>
+                            <td class="project-title">
+                                <normal><i>{{ item.0 }}</i></normal>
+                            </td>
+                            <td class="project-title">
+                                <normal><b>{{ item.1 }}</b></normal>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

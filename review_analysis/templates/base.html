@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>Amazon Electronics Synthesizer</title>
+
+    {% load static %}
+
+    <link href="{% static "site/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "site/font-awesome/css/font-awesome.css" %}" rel="stylesheet">
+    <link href="{% static "site/css/animate.css" %}" rel="stylesheet">
+    <link href="{% static "site/css/style.css" %}" rel="stylesheet">
+
+    <link href="{% static 'site/css/plugins/dataTables/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'site/css/plugins/dataTables/dataTables.responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'site/css/plugins/dataTables/dataTables.tableTools.min.css' %}" rel="stylesheet">
+
+
+    <!--[if lte IE 8]><script type="text/javascript" language="javascript" src="{% static 'site/js/excanvas.min.js' %}"></script><![endif]-->
+    <script type="text/javascript" src="{% static 'site/js/jquery-2.1.1.js' %}"></script>
+
+</head>
+
+
+<body class="top-navigation">
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom white-bg">
+        <nav class="navbar navbar-static-top" role="navigation">
+            <div class="navbar-header">
+                <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                    <i class="fa fa-reorder"></i>
+                </button>
+                <a href="{% url 'index' %}" class="navbar-brand">Amazon Electronics Synthesizer</a>
+            </div>
+            <div class="navbar-collapse collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'search' %}">Product Search</a></li>
+                    <li><a href="{% url 'lookup' %}">Lookup Product</a></li>
+                </ul>
+            </div>
+        </nav>
+        </div>
+        <div class="wrapper wrapper-content">
+
+            <div class="container">
+                {% block content %}
+                {% endblock %}
+            </div>
+
+        </div>
+        <div class="footer">
+            <div>
+                <strong>Copyright</strong> Amazon Electronics Synthesizer &copy; 2016
+            </div>
+        </div>
+
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="{% static 'site/js/bootstrap.min.js' %}"></script>
+
+    <!-- Flot -->
+    <script src="{% static 'site/js/plugins/flot/jquery.flot.js' %}"></script>
+    <script src="{% static 'site/js/plugins/flot/jquery.flot.tooltip.min.js' %}"></script>
+
+    <script src="{% static 'site/js/plugins/flot/jquery.flot.resize.js' %}"></script>
+    <script src="{% static 'site/js/plugins/flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static 'site/js/plugins/flot/jquery.flot.time.js' %}"></script>
+
+    <!-- Data Tables -->
+    <script src="{% static 'site/js/plugins/dataTables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'site/js/plugins/dataTables/dataTables.bootstrap.js' %}"></script>
+    <script src="{% static 'site/js/plugins/dataTables/dataTables.responsive.js' %}"></script>
+    <script src="{% static 'site/js/plugins/dataTables/dataTables.tableTools.min.js' %}"></script>
+
+    <!-- Overlay -->
+    <script src="{% static 'site/js/plugins/overlay/loadingoverlay.js' %}"></script>
+    <script src="{% static 'site/js/plugins/overlay/loadingoverlay.min.js' %}"></script>
+
+    <!-- Peity -->
+    <script src="{% static 'site/js/plugins/peity/jquery.peity.min.js' %}"></script>
+    <script src="{% static 'site/js/demo/peity-demo.js' %}"></script>
+
+
+    <script>
+        function loading(){
+            $.LoadingOverlay("show", {
+                    image: "",
+                    fontawesome: "fa fa-spinner fa-spin"
+                });
+        }
+
+        $(document).ready(function () {
+            $('.dataTables-example').dataTable({
+                responsive: true,
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "{% static 'site/js/plugins/dataTables/swf/copy_csv_xls_pdf.swf' %}"
+                }
+            });
+
+
+        });
+    </script>
+
+        <style>
+        body.DTTT_Print {
+            background: #fff;
+
+        }
+
+        .DTTT_Print #page-wrapper {
+            margin: 0;
+            background: #fff;
+        }
+
+        button.DTTT_button, div.DTTT_button, a.DTTT_button {
+            border: 1px solid #e7eaec;
+            background: #fff;
+            color: #676a6c;
+            box-shadow: none;
+            padding: 6px 8px;
+        }
+
+        button.DTTT_button:hover, div.DTTT_button:hover, a.DTTT_button:hover {
+            border: 1px solid #d2d2d2;
+            background: #fff;
+            color: #676a6c;
+            box-shadow: none;
+            padding: 6px 8px;
+        }
+
+        .dataTables_filter label {
+            margin-right: 5px;
+
+        }
+    </style>
+
+</body>
+
+
+</html>

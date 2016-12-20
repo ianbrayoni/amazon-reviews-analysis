@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Product Lookup
+                        <small>Enter ASIN to lookup item.
+                        </small>
+                    </h5>
+                </div>
+
+                <div class="ibox-content">
+                    <form method="post" action="{% url 'lookup' %}" class="form-horizontal">
+                        {% csrf_token %}
+
+                        <div class="hr-line-dashed"></div>
+                            <div class="form-group {% if form.asin.errors %}has-error{% endif %}">
+                                <label class="col-sm-2 control-label">ASIN</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="{{ form.asin.name }}">
+                                        <span class="input-group-btn">
+                                            <button type="submit" value="submit" class="btn btn-primary" onclick="loading()">Go!</button>
+                                        </span>
+                                    </div>
+                                    <div {% if form.asin.errors %} class="alert alert-danger" {% endif %}>
+                                    {% for error in form.asin.errors %}
+                                    <strong>{{ error|escape }}</strong>
+                                    {% endfor %}
+                                </div>
+                                </div>
+                            </div>
+                        <div class="hr-line-dashed"></div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
