@@ -13,7 +13,7 @@ from amazon_crawler.items import AmazonCrawlerItem # noqa
 class AmazonSpiderSpider(scrapy.Spider):
     """ spider to crawl product reviews from amazon.com"""
     name = "amazon_spider"
-    
+
     def __init__(self, *args, **kwargs):
         """
         Constructor receiving urls.
@@ -21,7 +21,7 @@ class AmazonSpiderSpider(scrapy.Spider):
         :param args: product url
         :param kwargs:
         """
-        super(AmazonSpiderSpider, self).__init__(*args, **kwargs) 
+        super(AmazonSpiderSpider, self).__init__(*args, **kwargs)
 
         self.start_urls = [kwargs.get('start_url')]
         self.asin = ((self.start_urls[0]).split('product-reviews')[1]).strip(
@@ -50,9 +50,9 @@ class AmazonSpiderSpider(scrapy.Spider):
         """
         classifier = load_classifier(settings.CLASSIFIER_OBJECT)
 
-        try:            
+        try:
             reviews = response.css('.review-text').xpath('string()').extract()
-            
+
             for review in reviews:
                 item = AmazonCrawlerItem()
                 item['asin'] = self.asin
@@ -66,7 +66,7 @@ class AmazonSpiderSpider(scrapy.Spider):
 
                 item['color'] = ColorCode.objects.get(id=sentiment)
 
-                yield item            
+                yield item
 
             next_page = response.\
                 css("ul.a-pagination >li.a-last > a::attr('href')")
@@ -76,7 +76,7 @@ class AmazonSpiderSpider(scrapy.Spider):
                 yield scrapy.Request(url, self.parse_reviews)
 
         except Exception, e:
-            raise e
+            raise e 
 
 
 def load_classifier(f):
