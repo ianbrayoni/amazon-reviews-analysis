@@ -146,11 +146,11 @@ STATIC_URL = '/static/'
 # Classifier loaded to file to avoid retraining
 CLASSIFIER_OBJECT = os.path.join(PROJECT_DIR, "naivebayes.pickle")
 
-# AWS API Params
-AWS_ACCESS_KEY = 'AKIAIISQG525FSEYBPZA'
-AWS_SECRET_KEY = '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'
-AWS_ASSOCIATE_TAG = 'revanalytics2-20'
-AWS_PREFERED_LOCALE = 'us'
+# AWS API Params - http://docs.aws.amazon.com/AWSECommerceService/latest/DG/ViewingCredentials.html
+AWS_ACCESS_KEY = '<your-aws-access-key>'
+AWS_SECRET_KEY = '<your-aws-secret-key>'
+AWS_ASSOCIATE_TAG = '<your-associate-tag>'
+AWS_PREFERED_LOCALE = '<your-preferred-locale>'
 
 #
 AWS_ERROR_RESPONSE = 'Oops! Sorry an error occurred when ' \
