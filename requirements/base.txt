@@ -16,7 +16,7 @@ PyDispatcher==2.0.5
 pyOpenSSL==17.5.0
 python-amazon-product-api==0.2.8
 queuelib==1.4.2
-Scrapy==1.1.1
+Scrapy==1.8.1
 scrapy-djangoitem==1.1.1
 service-identity==16.0.0
 six==1.10.0
